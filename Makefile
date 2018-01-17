@@ -1,6 +1,11 @@
 include Makefile.arch
 
 #
+# Pre-requisite
+#
+.PHONY: check-core-dir
+
+#
 # stuff to make
 #
 SOURCES=$(wildcard *.cc)
@@ -13,10 +18,16 @@ LIB=coreutil.so
 
 $(LIB): $(OBJECTS)
 	$(LD) $(LDFLAGS) $(SOFLAGS) $(OBJECTS) $(ROOTLIBS) -lTMVA -lEG -lGenVector -lXMLIO -lMLP -lTreePlayer -o $@
-	ln -sf $@ lib$@.so
+	ln -sf $@ lib$@
 
-%.o: %.cc
-	$(CXX) -Wunused-variable $(CXXFLAGS) -c $< -o $@
+%.o: %.cc check-core-dir
+	$(CXX) -Wunused-variable $(CXXFLAGS) -I$(COREDIR) -c $< -o $@
+
+check-core-dir:
+ifndef COREDIR
+    $(error COREDIR is not set. Please export COREDIR=/abspath/to/CORE)
+endif
+
 
 #
 # target to build
