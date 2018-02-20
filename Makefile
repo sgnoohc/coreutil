@@ -16,11 +16,11 @@ LIB=coreutil.so
 # how to make it
 #
 
-$(LIB): $(OBJECTS)
+$(LIB): $(OBJECTS) check-core-dir
 	$(LD) $(LDFLAGS) $(SOFLAGS) $(OBJECTS) $(ROOTLIBS) -lTMVA -lEG -lGenVector -lXMLIO -lMLP -lTreePlayer -o $@
 	ln -sf $@ lib$@
 
-%.o: %.cc check-core-dir
+%.o: %.cc
 	$(CXX) -Wunused-variable $(CXXFLAGS) -I$(COREDIR) -c $< -o $@
 
 check-core-dir:
