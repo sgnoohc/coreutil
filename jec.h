@@ -15,7 +15,7 @@ namespace CoreUtil
 {
     class jec
     {
-        private:
+        public:
             // Nominal correction
             std::vector<std::string> jetcorr_filenames_pfL1FastJetL2L3;
             FactorizedJetCorrector   * jet_corrector_pfL1FastJetL2L3;
@@ -28,12 +28,11 @@ namespace CoreUtil
 
             TString current_filename;
 
-        public:
             jec();
             ~jec();
             void resetObjects();
-            const FactorizedJetCorrector* getJEC(bool = false, int = -999);
-            const JetCorrectionUncertainty* getJECUnc(bool = false, int = -999);
+            FactorizedJetCorrector* getJEC(bool = false, int = -999);
+            JetCorrectionUncertainty* getJECUnc(bool = false, int = -999);
             void setJECFor(TString, bool = false);
     };
 }

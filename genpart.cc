@@ -28,7 +28,7 @@ void CoreUtil::genpart::clearVectors()
     genPart_pt.clear();
     genPart_eta.clear();
     genPart_phi.clear();
-    genPart_mass.clear();
+    //genPart_mass.clear();
     genPart_pdgId.clear();
     genPart_status.clear();
     genPart_isp6status3.clear();
@@ -48,7 +48,7 @@ void CoreUtil::genpart::addGenParticleToVectors()
     genPart_pt.push_back(tas::genps_p4().at(iGen).pt());
     genPart_eta.push_back(tas::genps_p4().at(iGen).eta());
     genPart_phi.push_back(tas::genps_p4().at(iGen).phi());
-    genPart_mass.push_back(tas::genps_mass().at(iGen));
+    //genPart_mass.push_back(tas::genps_mass().at(iGen));
     genPart_pdgId.push_back(tas::genps_id().at(iGen));
     genPart_status.push_back(tas::genps_status().at(iGen));
     genPart_isp6status3.push_back(tas::genps_isMostlyLikePythia6Status3().at(iGen));

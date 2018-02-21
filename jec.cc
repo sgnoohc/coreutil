@@ -33,7 +33,7 @@ void CoreUtil::jec::resetObjects()
 }
 
 //####################################################################################
-const FactorizedJetCorrector* CoreUtil::jec::getJEC(bool isData, int run)
+FactorizedJetCorrector* CoreUtil::jec::getJEC(bool isData, int run)
 {
     if (isData && run >= 278802 && run <= 278808)
     {
@@ -46,7 +46,7 @@ const FactorizedJetCorrector* CoreUtil::jec::getJEC(bool isData, int run)
 }
 
 //####################################################################################
-const JetCorrectionUncertainty* CoreUtil::jec::getJECUnc(bool isData, int run)
+JetCorrectionUncertainty* CoreUtil::jec::getJECUnc(bool isData, int run)
 {
     if (isData && run >= 278802 && run <= 278808)
     {

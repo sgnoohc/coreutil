@@ -22,7 +22,7 @@ namespace CoreUtil
             std::vector<Float_t> genPart_pt;
             std::vector<Float_t> genPart_eta;
             std::vector<Float_t> genPart_phi;
-            std::vector<Float_t> genPart_mass;
+            //std::vector<Float_t> genPart_mass;
             std::vector<Int_t> genPart_pdgId;
             std::vector<Int_t> genPart_status;
             std::vector<Bool_t> genPart_isp6status3;
