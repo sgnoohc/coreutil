@@ -3,8 +3,20 @@
 
 #include "Tools/btagsf/BTagCalibrationStandalone.h"
 
+#include "CMS3.h"
+
 #include "TH2.h"
 #include "TFile.h"
+
+#define JET_PT_MIN 20
+#define JET_ETA_MAX 5
+
+#define BJET_PT_MIN 20
+#define BJET_ETA_MAX 2.4
+
+#define BJET_CSV_TIGHT 0.9535
+#define BJET_CSV_MED 0.8484
+#define BJET_CSV_LOOSE 0.5426
 
 class BTagCalibration;
 class BTagCalibrationReader;
@@ -36,9 +48,19 @@ namespace CoreUtil
             TH2D* h_btag_eff_c_fastsim;
             TH2D* h_btag_eff_udsg_fastsim;
 
+            float btagprob_data;
+            float btagprob_heavy_UP;
+            float btagprob_heavy_DN;
+            float btagprob_light_UP;
+            float btagprob_light_DN;
+            float btagprob_mc;
+
             btag(bool fastsim=false) { setup(fastsim); }
             ~btag() {}
             void setup(bool=false);
+            void clearSF();
+            void accumulateSF(int iJet, float pt, float eta);
+            float getBtagEffFromFile(float pt, float eta, int mcFlavour, bool isFastsim);
 
     };
 }

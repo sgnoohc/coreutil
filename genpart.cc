@@ -5,23 +5,23 @@ void CoreUtil::genpart::process()
 {
 
     // If data event quit
-    if (tas::evt_isRealData())
+    if (cms3.evt_isRealData())
         return;
 
-    for (iGen = 0; iGen < tas::genps_p4().size(); iGen++)
+    clear();
+
+    for (unsigned int iGen = 0; iGen < cms3.genps_p4().size(); iGen++)
     {
 
-        clearVectors();
+        addGenParticleToVectors(iGen);
 
-        addGenParticleToVectors();
-
-        calcGenHT();
+        calcGenHT(iGen);
 
     }
 }
 
 //##########################################################################################
-void CoreUtil::genpart::clearVectors()
+void CoreUtil::genpart::clear()
 {
 
     genPart_p4.clear();
@@ -38,40 +38,42 @@ void CoreUtil::genpart::clearVectors()
     ngenPart = 0;
     ngen_p6s3Part = 0;
 
+    gen_ht = 0;
+
 }
 
 //##########################################################################################
-void CoreUtil::genpart::addGenParticleToVectors()
+void CoreUtil::genpart::addGenParticleToVectors(int iGen)
 {
 
-    genPart_p4.push_back(tas::genps_p4().at(iGen));
-    genPart_pt.push_back(tas::genps_p4().at(iGen).pt());
-    genPart_eta.push_back(tas::genps_p4().at(iGen).eta());
-    genPart_phi.push_back(tas::genps_p4().at(iGen).phi());
-    //genPart_mass.push_back(tas::genps_mass().at(iGen));
-    genPart_pdgId.push_back(tas::genps_id().at(iGen));
-    genPart_status.push_back(tas::genps_status().at(iGen));
-    genPart_isp6status3.push_back(tas::genps_isMostlyLikePythia6Status3().at(iGen));
-    genPart_charge.push_back(tas::genps_charge().at(iGen));
-    genPart_motherId.push_back(tas::genps_id_simplemother().at(iGen));
-    genPart_grandmaId.push_back(tas::genps_id_simplegrandma().at(iGen));
+    genPart_p4.push_back(cms3.genps_p4()[iGen]);
+    genPart_pt.push_back(cms3.genps_p4()[iGen].pt());
+    genPart_eta.push_back(cms3.genps_p4()[iGen].eta());
+    genPart_phi.push_back(cms3.genps_p4()[iGen].phi());
+    //genPart_mass.push_back(cms3.genps_mass()[iGen]);
+    genPart_pdgId.push_back(cms3.genps_id()[iGen]);
+    genPart_status.push_back(cms3.genps_status()[iGen]);
+    genPart_isp6status3.push_back(cms3.genps_isMostlyLikePythia6Status3()[iGen]);
+    genPart_charge.push_back(cms3.genps_charge()[iGen]);
+    genPart_motherId.push_back(cms3.genps_id_simplemother()[iGen]);
+    genPart_grandmaId.push_back(cms3.genps_id_simplegrandma()[iGen]);
     ngenPart++;
-    if (tas::genps_isMostlyLikePythia6Status3().at(iGen))
+    if (cms3.genps_isMostlyLikePythia6Status3()[iGen])
         ngen_p6s3Part++;
 
 }
 
 //##########################################################################################
-void CoreUtil::genpart::calcGenHT()
+void CoreUtil::genpart::calcGenHT(int iGen)
 {
 
     // calculate gen_ht for stitching purposes
-    if ((abs(tas::genps_id().at(iGen)) <  6 || // quarks
-                abs(tas::genps_id().at(iGen)) == 21)  // gluons
-            && (tas::genps_status().at(iGen) == 22 || // something to do with "status 3"
-                tas::genps_status().at(iGen) == 23))
+    if ((abs(cms3.genps_id()[iGen]) <  6 || // quarks
+                abs(cms3.genps_id()[iGen]) == 21)  // gluons
+            && (cms3.genps_status()[iGen] == 22 || // something to do with "status 3"
+                cms3.genps_status()[iGen] == 23))
     {
-        gen_ht += tas::genps_p4().at(iGen).pt();
+        gen_ht += cms3.genps_p4()[iGen].pt();
     }
 
 }

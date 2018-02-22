@@ -33,5 +33,5 @@ void CoreUtil::electron::process()
 //########################################################################################
 bool CoreUtil::electron::pass(int i)
 {
-    return (isVetoElectronPOGspring16noIso_v1(i) || passElectronSelection_VVV(i, VVV_MVAbased_tight_noiso) && cms3.els_p4()[i].pt() > 10.);
+    return ((isVetoElectronPOGspring16noIso_v1(i) || passElectronSelection_VVV(i, VVV_MVAbased_tight_noiso)) && cms3.els_p4()[i].pt() > 10.);
 }

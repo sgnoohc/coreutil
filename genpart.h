@@ -14,8 +14,6 @@ namespace CoreUtil
 
         public:
 
-            unsigned int iGen;
-
             Int_t ngenPart;
             Int_t ngen_p6s3Part;
             std::vector<LorentzVector> genPart_p4 ;
@@ -36,9 +34,9 @@ namespace CoreUtil
             ~genpart() {}
 
             void process();
-            void clearVectors();
-            void addGenParticleToVectors();
-            void calcGenHT();
+            void clear();
+            void addGenParticleToVectors(int iGen);
+            void calcGenHT(int iGen);
 
 
     };
