@@ -36,6 +36,8 @@ void CoreUtil::genpart::clear()
     genPart_motherId.clear();
     genPart_grandmaId.clear();
     ngenPart = 0;
+    ngenLep = 0;
+    ngenLepFromTau = 0;
     ngen_p6s3Part = 0;
 
     gen_ht = 0;
@@ -61,6 +63,30 @@ void CoreUtil::genpart::addGenParticleToVectors(int iGen)
     if (cms3.genps_isMostlyLikePythia6Status3()[iGen])
         ngen_p6s3Part++;
 
+    int pdgId = cms3.genps_id()[iGen];
+    int status = cms3.genps_status()[iGen];
+    int motherId = cms3.genps_id_simplemother()[iGen];
+    int grandmaId = cms3.genps_id_simplegrandma()[iGen];
+
+    // electrons, muons: status 1 or 23 and mother W/Z/H or tau from W/Z/H
+    if ((pdgId == 11 || pdgId == 13) && (status == 1 || status == 23))
+    {
+        // save leptons pre-FSR: prefer status 23 over status 1
+        if (status == 1 && motherId == pdgId && (cms3.genps_status().at(cms3.genps_idx_simplemother().at(iGen)) == 23))
+        {
+            // don't save
+        }
+        // leptons from taus
+        else if (motherId == 15 && (grandmaId == 25 || grandmaId == 24 || grandmaId == 23 || grandmaId == 15))
+        {
+            ngenLepFromTau++;
+        }
+        // leptons from W/Z/H
+        else if (motherId == 25 || motherId == 24 || motherId == 23)
+        {
+            ngenLep++;
+        }
+    } // status 1 e or mu
 }
 
 //##########################################################################################

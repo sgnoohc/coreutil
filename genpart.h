@@ -15,6 +15,8 @@ namespace CoreUtil
         public:
 
             Int_t ngenPart;
+            Int_t ngenLep;
+            Int_t ngenLepFromTau;
             Int_t ngen_p6s3Part;
             std::vector<LorentzVector> genPart_p4 ;
             std::vector<Float_t> genPart_pt;
@@ -24,7 +26,7 @@ namespace CoreUtil
             std::vector<Int_t> genPart_pdgId;
             std::vector<Int_t> genPart_status;
             std::vector<Bool_t> genPart_isp6status3;
-            std::vector<Float_t> genPart_charge;
+            std::vector<Int_t> genPart_charge;
             std::vector<Int_t> genPart_motherId;
             std::vector<Int_t> genPart_grandmaId;
 
