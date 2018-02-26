@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 
+#include "IsolationTools.h"
 #include "ElectronSelections.h"
 #include "VVVSelections.h"
 #include "Base.h"

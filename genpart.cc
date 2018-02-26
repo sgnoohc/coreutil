@@ -56,17 +56,17 @@ void CoreUtil::genpart::addGenParticleToVectors(int iGen)
     genPart_pdgId.push_back(cms3.genps_id()[iGen]);
     genPart_status.push_back(cms3.genps_status()[iGen]);
     genPart_isp6status3.push_back(cms3.genps_isMostlyLikePythia6Status3()[iGen]);
-    genPart_charge.push_back(cms3.genps_charge()[iGen]);
+    genPart_charge.push_back(int(cms3.genps_charge()[iGen]));
     genPart_motherId.push_back(cms3.genps_id_simplemother()[iGen]);
     genPart_grandmaId.push_back(cms3.genps_id_simplegrandma()[iGen]);
     ngenPart++;
     if (cms3.genps_isMostlyLikePythia6Status3()[iGen])
         ngen_p6s3Part++;
 
-    int pdgId = cms3.genps_id()[iGen];
+    int pdgId = abs(cms3.genps_id()[iGen]);
     int status = cms3.genps_status()[iGen];
-    int motherId = cms3.genps_id_simplemother()[iGen];
-    int grandmaId = cms3.genps_id_simplegrandma()[iGen];
+    int motherId = abs(cms3.genps_id_simplemother()[iGen]);
+    int grandmaId = abs(cms3.genps_id_simplegrandma()[iGen]);
 
     // electrons, muons: status 1 or 23 and mother W/Z/H or tau from W/Z/H
     if ((pdgId == 11 || pdgId == 13) && (status == 1 || status == 23))
