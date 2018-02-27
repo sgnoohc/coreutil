@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <functional>
 
 #include "MuonSelections.h"
 #include "VVVSelections.h"
@@ -21,8 +22,7 @@ namespace CoreUtil
             ~muon() {}
 
             void setup();
-            void process();
-            bool pass(int i);
+            void process(std::function<bool(int)> pass);
 
     };
 }

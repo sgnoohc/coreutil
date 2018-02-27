@@ -6,7 +6,7 @@ void CoreUtil::muon::setup()
 }
 
 //########################################################################################
-void CoreUtil::muon::process()
+void CoreUtil::muon::process(std::function<bool(int)> pass)
 {
 
     // Clear the saved indices
@@ -26,8 +26,13 @@ void CoreUtil::muon::process()
 
 }
 
-//########################################################################################
-bool CoreUtil::muon::pass(int i)
-{
-    return (isLooseMuonPOG(i) && cms3.mus_p4()[i].pt() > 10.);
-}
+////########################################################################################
+//bool CoreUtil::muon::pass(int i)
+//{
+//    if (!( cms3.mus_p4()[idx].pt()            > 10.    )) return false;
+//    if (!( cms3.mus_p4()[idx].eta()           < 2.4    )) return false;
+//    if (!( fabs(cms3.mus_dxyPV().at(idx))     <  0.05  )) return false;
+//    if (!( fabs(cms3.mus_dzPV().at(idx))      <  0.1   )) return false;
+//    if (!( isLooseMuonPOG(idx)                         )) return false;
+//    return true;
+//}

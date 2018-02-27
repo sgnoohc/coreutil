@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <functional>
 
 #include "IsolationTools.h"
 #include "ElectronSelections.h"
@@ -24,8 +25,7 @@ namespace CoreUtil
             ~electron() {}
 
             void setup();
-            void process();
-            bool pass(int i);
+            void process(std::function<bool(int)> pass);
 
     };
 }
