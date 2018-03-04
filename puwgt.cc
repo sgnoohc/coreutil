@@ -4,7 +4,7 @@ void CoreUtil::puwgt::setup()
 {
     h_vtxweight = NULL;
     f_vtx = NULL;
-    f_vtx = TFile::Open("puWeight2016.root", "READ");
+    f_vtx = TFile::Open("coreutil/data/puWeight2016.root", "READ");
     h_vtxweight = (TH1F*)f_vtx->Get("pileupWeight")->Clone("h_vtxweight");
 }
 

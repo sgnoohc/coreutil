@@ -5,7 +5,7 @@ void CoreUtil::electron::setup()
 {
 
     cout << "Creating electron MVA instance" << endl;
-    createAndInitMVA("MVAinput", true, false, 80); // for electrons
+    createAndInitMVA("coreutil/data/MVAinput", true, false, 80); // for electrons
 
 }
 
