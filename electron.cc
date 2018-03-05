@@ -10,11 +10,12 @@ void CoreUtil::electron::setup()
 }
 
 //########################################################################################
-void CoreUtil::electron::process(std::function<bool(int)> pass)
+void CoreUtil::electron::process(std::function<bool(int)> pass, std::function<bool(int, int)> tagpass)
 {
 
     // Clear the saved indices
     index.clear();
+    if (tagpass) tagindex.clear();
 
     for (unsigned int iEl = 0; iEl < cms3.els_p4().size(); iEl++)
     {
@@ -26,6 +27,26 @@ void CoreUtil::electron::process(std::function<bool(int)> pass)
         // Save the indices
         index.push_back(iEl);
 
+        if (tagpass)
+        {
+            int tagel = -1;
+            for (unsigned int jEl = 0; jEl < cms3.els_p4().size(); jEl++)
+            {
+                // Skip if the considered lepton is identical
+                if (iEl == jEl)
+                    continue;
+
+                // If it did not pass tag electron defn skip
+                // iEl = probe, jEl = tag
+                if (!tagpass(iEl, jEl))
+                    continue;
+
+                // If a tag electron found set the index and break
+                tagel = jEl;
+                break;
+            }
+            tagindex.push_back(tagel);
+        }
     }
 
 }

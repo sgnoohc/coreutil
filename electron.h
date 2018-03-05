@@ -20,12 +20,13 @@ namespace CoreUtil
         public:
 
             std::vector<int> index;
+            std::vector<int> tagindex;
 
             electron() { setup(); }
             ~electron() {}
 
             void setup();
-            void process(std::function<bool(int)> pass);
+            void process(std::function<bool(int)> pass, std::function<bool(int, int)> tagpass=nullptr);
 
     };
 }
