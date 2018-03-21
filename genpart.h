@@ -35,7 +35,7 @@ namespace CoreUtil
             genpart() {}
             ~genpart() {}
 
-            void process(std::function<bool(int)> pass);
+            void process(std::function<bool(int)> pass=nullptr);
             void clear();
             void addGenParticleToVectors(int iGen);
             void calcGenHT(int iGen);
