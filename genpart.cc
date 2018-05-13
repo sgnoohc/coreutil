@@ -1,7 +1,7 @@
 #include "genpart.h"
 
 //##########################################################################################
-void CoreUtil::genpart::process()
+void CoreUtil::genpart::process(std::function<bool(int)> pass)
 {
 
     // If data event quit
@@ -13,9 +13,14 @@ void CoreUtil::genpart::process()
     for (unsigned int iGen = 0; iGen < cms3.genps_p4().size(); iGen++)
     {
 
-        addGenParticleToVectors(iGen);
-
         calcGenHT(iGen);
+
+        // Basic cuts
+        if (pass)
+            if (!pass(iGen))
+                continue;
+
+        addGenParticleToVectors(iGen);
 
     }
 }
