@@ -51,6 +51,19 @@ void CoreUtil::jec::resetObjects()
 }
 
 //####################################################################################
+FactorizedJetCorrector* CoreUtil::jec::getJECL1(bool isData, int run)
+{
+    if (isData && run >= 278802 && run <= 278808)
+    {
+        return jet_corrector_pfL1_postrun278802;
+    }
+    else
+    {
+        return jet_corrector_pfL1;
+    }
+}
+
+//####################################################################################
 FactorizedJetCorrector* CoreUtil::jec::getJEC(bool isData, int run)
 {
     if (isData && run >= 278802 && run <= 278808)
@@ -100,6 +113,8 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
     {
         if (filename.Contains("Run2015C") || filename.Contains("Run2015D"))
         {
+            jetcorr_filenames_pfL1.clear();
+            jetcorr_filenames_pfL1.push_back("coreutil/data/jetCorrections/source_76X/DATA/Fall15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.clear();
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_76X/DATA/Fall15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_76X/DATA/Fall15_25nsV2_DATA_L2Relative_AK4PFchs.txt");
@@ -110,6 +125,8 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
         else
         {
             // files for 76X MC
+            jetcorr_filenames_pfL1.clear();
+            jetcorr_filenames_pfL1.push_back("coreutil/data/jetCorrections/source_76X/MC/Fall15_25nsV2_MC_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.clear();
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_76X/MC/Fall15_25nsV2_MC_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_76X/MC/Fall15_25nsV2_MC_L2Relative_AK4PFchs.txt");
@@ -120,6 +137,8 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
     else if (filename.Contains("80MiniAODv") || filename.Contains("RelVal"))
     {
         // files for 80X MC, ICHEP production
+        jetcorr_filenames_pfL1.clear();
+        jetcorr_filenames_pfL1.push_back("coreutil/data/jetCorrections/source_80X/MC/Spring16_25nsV1_MC_L1FastJet_AK4PFchs.txt");
         jetcorr_filenames_pfL1FastJetL2L3.clear();
         jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/MC/Spring16_25nsV1_MC_L1FastJet_AK4PFchs.txt");
         jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/MC/Spring16_25nsV1_MC_L2Relative_AK4PFchs.txt");
@@ -129,6 +148,8 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
     else if (filename.Contains("Summer16") || filename.Contains("TEST"))
     {
         // files for 80X MC, Summer16 (Moriond17) production
+        jetcorr_filenames_pfL1.clear();
+        jetcorr_filenames_pfL1.push_back("coreutil/data/jetCorrections/source_80X/MC/Summer16_23Sep2016V3_MC_L1FastJet_AK4PFchs.txt");
         jetcorr_filenames_pfL1FastJetL2L3.clear();
         jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/MC/Summer16_23Sep2016V3_MC_L1FastJet_AK4PFchs.txt");
         jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/MC/Summer16_23Sep2016V3_MC_L2Relative_AK4PFchs.txt");
@@ -143,6 +164,8 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
             filename.Contains("Run2016D"))
         {
             // files for 80X Data
+            jetcorr_filenames_pfL1.clear();
+            jetcorr_filenames_pfL1.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016BCDV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.clear();
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016BCDV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016BCDV3_DATA_L2Relative_AK4PFchs.txt");
@@ -154,12 +177,16 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
             filename.Contains("Run2016F"))
         {
             // files for 80X Data
+            jetcorr_filenames_pfL1.clear();
+            jetcorr_filenames_pfL1.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016EFV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.clear();
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016EFV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016EFV3_DATA_L2Relative_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016EFV3_DATA_L3Absolute_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016EFV3_DATA_L2L3Residual_AK4PFchs.txt");
             jecUnc = new JetCorrectionUncertainty("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016EFV3_DATA_Uncertainty_AK4PFchs.txt");
+            jetcorr_filenames_pfL1_postrun278802.clear();
+            jetcorr_filenames_pfL1_postrun278802.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3_postrun278802.clear();
             jetcorr_filenames_pfL1FastJetL2L3_postrun278802.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3_postrun278802.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L2Relative_AK4PFchs.txt");
@@ -171,12 +198,16 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
         if (filename.Contains("Run2016G"))
         {
             // files for 80X Data
+            jetcorr_filenames_pfL1.clear();
+            jetcorr_filenames_pfL1.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.clear();
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L2Relative_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L3Absolute_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L2L3Residual_AK4PFchs.txt");
             jecUnc = new JetCorrectionUncertainty("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_Uncertainty_AK4PFchs.txt");
+            jetcorr_filenames_pfL1_postrun278802.clear();
+            jetcorr_filenames_pfL1_postrun278802.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3_postrun278802.clear();
             jetcorr_filenames_pfL1FastJetL2L3_postrun278802.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3_postrun278802.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016GV3_DATA_L2Relative_AK4PFchs.txt");
@@ -187,12 +218,16 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
         }
         if (filename.Contains("Run2016H"))
         {
+            jetcorr_filenames_pfL1.clear();
+            jetcorr_filenames_pfL1.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016HV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.clear();
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016HV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016HV3_DATA_L2Relative_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016HV3_DATA_L3Absolute_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016HV3_DATA_L2L3Residual_AK4PFchs.txt");
             jecUnc = new JetCorrectionUncertainty("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016HV3_DATA_Uncertainty_AK4PFchs.txt");
+            jetcorr_filenames_pfL1_postrun278802.clear();
+            jetcorr_filenames_pfL1_postrun278802.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016HV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3_postrun278802.clear();
             jetcorr_filenames_pfL1FastJetL2L3_postrun278802.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016HV3_DATA_L1FastJet_AK4PFchs.txt");
             jetcorr_filenames_pfL1FastJetL2L3_postrun278802.push_back("coreutil/data/jetCorrections/source_80X/DATA/Summer16_23Sep2016HV3_DATA_L2Relative_AK4PFchs.txt");
@@ -239,6 +274,8 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
     if (isfastsim)
     {
         // files for 25ns fastsim samples
+        jetcorr_filenames_pfL1.clear();
+        jetcorr_filenames_pfL1.push_back("coreutil/data/jetCorrections/source_80X/FASTSIM/Spring16_FastSimV1_L1FastJet_AK4PFchs.txt");
         jetcorr_filenames_pfL1FastJetL2L3.clear();
         jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/FASTSIM/Spring16_FastSimV1_L1FastJet_AK4PFchs.txt");
         jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/FASTSIM/Spring16_FastSimV1_L2Relative_AK4PFchs.txt");
@@ -266,6 +303,8 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
 
     // Now create
     jet_corrector_pfL1FastJetL2L3  = makeJetCorrector(jetcorr_filenames_pfL1FastJetL2L3);
+    jet_corrector_pfL1  = makeJetCorrector(jetcorr_filenames_pfL1);
+    jet_corrector_pfL1_postrun278802  = makeJetCorrector(jetcorr_filenames_pfL1_postrun278802);
     // For jet uncertainty for 2016 the code was written in bad ways such that the jetunc was created on the fly above in the function
     // Starting 2017 I tried to clean up a little bit so that it is created at the end
     if (!jecUnc)

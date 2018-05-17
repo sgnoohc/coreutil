@@ -17,6 +17,16 @@ namespace CoreUtil
     class jec
     {
         public:
+            // PU correction
+            std::vector<std::string> jetcorr_filenames_pfL1;
+            FactorizedJetCorrector   * jet_corrector_pfL1;
+            JetCorrectionUncertainty * jecUnc_pfL1;
+
+            // PU corrections for later runs in 2016F
+            std::vector<std::string> jetcorr_filenames_pfL1_postrun278802;
+            FactorizedJetCorrector   * jet_corrector_pfL1_postrun278802;
+            JetCorrectionUncertainty * jecUnc_pfL1_postrun278802;
+
             // Nominal correction
             std::vector<std::string> jetcorr_filenames_pfL1FastJetL2L3;
             std::string jetunc_filename_pfL1FastJetL2L3;
@@ -34,6 +44,7 @@ namespace CoreUtil
             jec();
             ~jec();
             void resetObjects();
+            FactorizedJetCorrector* getJECL1(bool = false, int = -999);
             FactorizedJetCorrector* getJEC(bool = false, int = -999);
             JetCorrectionUncertainty* getJECUnc(bool = false, int = -999);
             void setJECFor(TString, bool = false);
