@@ -28,6 +28,7 @@ namespace CoreUtil
         public:
             // for btag SFs
             BTagCalibration* calib;
+            BTagCalibrationReader* reader_fullsim;
             BTagCalibrationReader* reader_heavy;
             BTagCalibrationReader* reader_heavy_UP;
             BTagCalibrationReader* reader_heavy_DN;

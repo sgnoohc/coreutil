@@ -5,12 +5,10 @@ void CoreUtil::btag::setup(bool fastsim)
 {
     // setup btag calibration readers
     calib           = new BTagCalibration("csvv2", "coreutil/data/btagsf/CSVv2_Moriond17_B_H.csv"); // Moriond17 version of SFs
-    reader_heavy    = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "comb", "central"); // central
-    reader_heavy_UP = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "comb", "up");      // sys up
-    reader_heavy_DN = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "comb", "down");    // sys down
-    reader_light    = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "incl", "central"); // central
-    reader_light_UP = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "incl", "up");      // sys up
-    reader_light_DN = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "incl", "down");    // sys down
+    reader_fullsim = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central",{"up","down"});
+    reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_B, "comb");
+    reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_C, "comb");
+    reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_UDSG, "incl");
     // get btag efficiencies
     TFile * f_btag_eff           = new TFile("coreutil/data/btagsf/btageff__ttbar_powheg_pythia8_25ns_Moriond17.root");
     TH2D  * h_btag_eff_b_temp    = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_b");
@@ -25,9 +23,10 @@ void CoreUtil::btag::setup(bool fastsim)
     {
         // setup btag calibration readers
         calib_fastsim     = new BTagCalibration("CSV", "coreutil/data/btagsf/fastsim_csvv2_ttbar_26_1_2017.csv"); // Moriond 17 25ns fastsim version of SFs
-        reader_fastsim    = new BTagCalibrationReader(calib_fastsim, BTagEntry::OP_LOOSE, "fastsim", "central"); // central
-        reader_fastsim_UP = new BTagCalibrationReader(calib_fastsim, BTagEntry::OP_LOOSE, "fastsim", "up");      // sys up
-        reader_fastsim_DN = new BTagCalibrationReader(calib_fastsim, BTagEntry::OP_LOOSE, "fastsim", "down");    // sys down
+        reader_fastsim = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central",{"up","down"});
+        reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_UDSG, "fastsim");
+        reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_B, "fastsim");
+        reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_C, "fastsim");
         // get btag efficiencies
         TFile * f_btag_eff_fastsim           = new TFile("coreutil/data/btagsf/btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root");
         TH2D  * h_btag_eff_b_fastsim_temp    = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_b");
@@ -57,37 +56,28 @@ void CoreUtil::btag::accumulateSF(int iJet, float pt, float eta)
     float current_csv_val = cms3.getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags", iJet);
     bool isData = cms3.evt_isRealData();
     bool isSMSScan = false;
+
+    float eff = getBtagEffFromFile(pt, eta, cms3.pfjets_hadronFlavour().at(iJet), isSMSScan);
+    BTagEntry::JetFlavor flavor = BTagEntry::FLAV_UDSG;
+    if (abs(cms3.pfjets_hadronFlavour().at(iJet)) == 5) { flavor = BTagEntry::FLAV_B; }
+    else if (abs(cms3.pfjets_hadronFlavour().at(iJet)) == 4) { flavor = BTagEntry::FLAV_C; }
+    float weight_cent(1.), weight_UP(1.), weight_DN(1.);
+    weight_cent = reader_fullsim->eval_auto_bounds("central",flavor,eta,pt);
+    weight_UP = reader_fullsim->eval_auto_bounds("up",flavor,eta,pt);
+    weight_DN = reader_fullsim->eval_auto_bounds("down",flavor,eta,pt);
+    // extra SF for fastsim
+    if (isSMSScan)
+    {
+        weight_cent *= reader_fastsim->eval_auto_bounds("central", flavor, eta, pt);
+        weight_UP *= reader_fastsim->eval_auto_bounds("up", flavor, eta, pt);
+        weight_DN *= reader_fastsim->eval_auto_bounds("down", flavor, eta, pt);
+    }
+
     if (current_csv_val >= BJET_CSV_LOOSE && (fabs(eta) < BJET_ETA_MAX) && (pt > BJET_PT_MIN))
     {
         // for applying btagging SFs
         if (!isData)
         {
-            float eff = getBtagEffFromFile(pt, eta, cms3.pfjets_hadronFlavour().at(iJet), isSMSScan);
-            BTagEntry::JetFlavor flavor = BTagEntry::FLAV_UDSG;
-            if (abs(cms3.pfjets_hadronFlavour().at(iJet)) == 5) { flavor = BTagEntry::FLAV_B; }
-            else if (abs(cms3.pfjets_hadronFlavour().at(iJet)) == 4) { flavor = BTagEntry::FLAV_C; }
-            float pt_cutoff = std::max(30., std::min(669., double(pt)));
-            float eta_cutoff = std::min(2.39, fabs(double(eta)));
-            float weight_cent(1.), weight_UP(1.), weight_DN(1.);
-            if (flavor == BTagEntry::FLAV_UDSG)
-            {
-                weight_cent = reader_light->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_UP = reader_light_UP->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_DN = reader_light_DN->eval(flavor, eta_cutoff, pt_cutoff);
-            }
-            else
-            {
-                weight_cent = reader_heavy->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_UP = reader_heavy_UP->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_DN = reader_heavy_DN->eval(flavor, eta_cutoff, pt_cutoff);
-            }
-            // extra SF for fastsim
-            if (isSMSScan)
-            {
-                weight_cent *= reader_fastsim->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_UP *= reader_fastsim_UP->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_DN *= reader_fastsim_DN->eval(flavor, eta_cutoff, pt_cutoff);
-            }
             btagprob_data *= weight_cent * eff;
             btagprob_mc *= eff;
             if (flavor == BTagEntry::FLAV_UDSG)
@@ -110,32 +100,6 @@ void CoreUtil::btag::accumulateSF(int iJet, float pt, float eta)
     {
         if (!isData)   // fail med btag -- needed for SF event weights
         {
-            float eff = getBtagEffFromFile(pt, eta, cms3.pfjets_hadronFlavour().at(iJet), isSMSScan);
-            BTagEntry::JetFlavor flavor = BTagEntry::FLAV_UDSG;
-            if (abs(cms3.pfjets_hadronFlavour().at(iJet)) == 5) { flavor = BTagEntry::FLAV_B; }
-            else if (abs(cms3.pfjets_hadronFlavour().at(iJet)) == 4) { flavor = BTagEntry::FLAV_C; }
-            float pt_cutoff = std::max(30., std::min(669., double(pt)));
-            float eta_cutoff = std::min(2.39, fabs(double(eta)));
-            float weight_cent(1.), weight_UP(1.), weight_DN(1.);
-            if (flavor == BTagEntry::FLAV_UDSG)
-            {
-                weight_cent = reader_light->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_UP = reader_light_UP->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_DN = reader_light_DN->eval(flavor, eta_cutoff, pt_cutoff);
-            }
-            else
-            {
-                weight_cent = reader_heavy->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_UP = reader_heavy_UP->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_DN = reader_heavy_DN->eval(flavor, eta_cutoff, pt_cutoff);
-            }
-            // extra SF for fastsim
-            if (isSMSScan)
-            {
-                weight_cent *= reader_fastsim->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_UP *= reader_fastsim_UP->eval(flavor, eta_cutoff, pt_cutoff);
-                weight_DN *= reader_fastsim_DN->eval(flavor, eta_cutoff, pt_cutoff);
-            }
             btagprob_data *= (1. - weight_cent * eff);
             btagprob_mc *= (1. - eff);
             if (flavor == BTagEntry::FLAV_UDSG)

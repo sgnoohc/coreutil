@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "TString.h"
+#include "TSystem.h"
 
 #include "Tools/jetcorr/FactorizedJetCorrector.h"
 #include "Tools/JetCorrector.h"
@@ -18,6 +19,7 @@ namespace CoreUtil
         public:
             // Nominal correction
             std::vector<std::string> jetcorr_filenames_pfL1FastJetL2L3;
+            std::string jetunc_filename_pfL1FastJetL2L3;
             FactorizedJetCorrector   * jet_corrector_pfL1FastJetL2L3;
             JetCorrectionUncertainty * jecUnc;
 
@@ -27,6 +29,7 @@ namespace CoreUtil
             JetCorrectionUncertainty * jecUnc_postrun278802;
 
             TString current_filename;
+            TString jecdatapath;
 
             jec();
             ~jec();
@@ -34,6 +37,7 @@ namespace CoreUtil
             FactorizedJetCorrector* getJEC(bool = false, int = -999);
             JetCorrectionUncertainty* getJECUnc(bool = false, int = -999);
             void setJECFor(TString, bool = false);
+            void setJECFileNames(std::string, std::string);
     };
 }
 

@@ -12,6 +12,24 @@ CoreUtil::jec::jec()
     jecUnc_postrun278802                        = NULL;
     jetcorr_filenames_pfL1FastJetL2L3 = std::vector<std::string>();
     jetcorr_filenames_pfL1FastJetL2L3_postrun278802 = std::vector<std::string>();
+    // jet uncertainty filename
+    jetunc_filename_pfL1FastJetL2L3 = "";
+
+    TString path = gSystem->Getenv("COREDIR");
+
+    // If path is null
+    if (path.IsNull())
+    {
+        printf("CoreUtil::jec::jec() Must set COREDIR=/path/to/CORE\n");
+        abort();
+    }
+
+    // Append the fullpath via hardcode
+    jecdatapath = path;
+    jecdatapath += "/Tools/jetcorr/data/";
+
+    printf("CoreUtil::jec::jec() Loading %s\n", path.Data());
+
 }
 
 //####################################################################################
@@ -74,6 +92,9 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
     // Set the current_filename to the provided filename
     current_filename = filename;
 
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    // 2015/2016
+    //-----------------------------------------------------------------------------------------------------------------------------------
     //JECs for 76X
     if (filename.Contains("16Dec2015") || filename.Contains("76X_mcRun2"))
     {
@@ -181,6 +202,40 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
             jet_corrector_pfL1FastJetL2L3_postrun278802  = makeJetCorrector(jetcorr_filenames_pfL1FastJetL2L3_postrun278802);
         }
     }
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    // 2017
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    else if (filename.Contains("Run2017"))
+    {
+        if (filename.Contains("Run2017B"))
+        {
+            setJECFileNames("Fall17_17Nov2017B_V6", "DATA");
+        }
+        if (filename.Contains("Run2017C"))
+        {
+            setJECFileNames("Fall17_17Nov2017C_V6", "DATA");
+        }
+        if (filename.Contains("Run2017D"))
+        {
+            setJECFileNames("Fall17_17Nov2017D_V6", "DATA");
+        }
+        if (filename.Contains("Run2017E"))
+        {
+            setJECFileNames("Fall17_17Nov2017E_V6", "DATA");
+        }
+        if (filename.Contains("Run2017F"))
+        {
+            setJECFileNames("Fall17_17Nov2017F_V6", "DATA");
+        }
+    }
+    else if (filename.Contains("Fall17MiniAODv2"))
+    {
+        setJECFileNames("Fall17_17Nov2017_V6", "MC");
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    // 2016 fast sim
+    //-----------------------------------------------------------------------------------------------------------------------------------
     if (isfastsim)
     {
         // files for 25ns fastsim samples
@@ -190,15 +245,41 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
         jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/FASTSIM/Spring16_FastSimV1_L3Absolute_AK4PFchs.txt");
         jecUnc = new JetCorrectionUncertainty("coreutil/data/jetCorrections/source_80X/FASTSIM/Spring16_FastSimV1_Uncertainty_AK4PFchs.txt");
     }
+
+
+    //===================================================================================================================================
+    // Now create the jet corrector based on what it is set to
+    //===================================================================================================================================
+
     if (jetcorr_filenames_pfL1FastJetL2L3.size() == 0)
     {
         cout << "Error, sample not found. Check the JECs." << endl;
         exit(100);
     }
+
+    // Print what is used
     cout << "JECs used:" << endl;
     for (size_t jecind = 0; jecind < jetcorr_filenames_pfL1FastJetL2L3.size(); jecind++)
     {
         cout << jetcorr_filenames_pfL1FastJetL2L3.at(jecind) << endl;
     }
+
+    // Now create
     jet_corrector_pfL1FastJetL2L3  = makeJetCorrector(jetcorr_filenames_pfL1FastJetL2L3);
+    // For jet uncertainty for 2016 the code was written in bad ways such that the jetunc was created on the fly above in the function
+    // Starting 2017 I tried to clean up a little bit so that it is created at the end
+    if (!jecUnc)
+        jecUnc = new JetCorrectionUncertainty(jetunc_filename_pfL1FastJetL2L3);
+}
+
+//####################################################################################
+void CoreUtil::jec::setJECFileNames(std::string jecEra, std::string type)
+{
+    std::string basepath = jecdatapath.Data(); // A bit messy? Oh what the hell, this whole thing is messy... Besides I like TString generally
+    jetcorr_filenames_pfL1FastJetL2L3.clear();
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L1FastJet_AK4PFchs.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L2Relative_AK4PFchs.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L3Absolute_AK4PFchs.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L2L3Residual_AK4PFchs.txt");
+    jetunc_filename_pfL1FastJetL2L3 = basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_Uncertainty_AK4PFchs.txt";
 }
