@@ -316,9 +316,9 @@ void CoreUtil::jec::setJECFileNames(std::string jecEra, std::string type)
 {
     std::string basepath = jecdatapath.Data(); // A bit messy? Oh what the hell, this whole thing is messy... Besides I like TString generally
     jetcorr_filenames_pfL1FastJetL2L3.clear();
-    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L1FastJet_AK4PFchs.txt");
-    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L2Relative_AK4PFchs.txt");
-    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L3Absolute_AK4PFchs.txt");
-    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L2L3Residual_AK4PFchs.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L1FastJet_AK4PFchs.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L2Relative_AK4PFchs.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L3Absolute_AK4PFchs.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L2L3Residual_AK4PFchs.txt");
     jetunc_filename_pfL1FastJetL2L3 = basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_Uncertainty_AK4PFchs.txt";
 }
