@@ -263,7 +263,7 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
             setJECFileNames("Fall17_17Nov2017F_V6", "DATA");
         }
     }
-    else if (filename.Contains("Fall17MiniAODv2"))
+    else if (filename.Contains("Fall17MiniAOD"))
     {
         setJECFileNames("Fall17_17Nov2017_V6", "MC");
     }

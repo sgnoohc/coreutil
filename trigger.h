@@ -14,6 +14,10 @@ namespace CoreUtil
             bool HLT_DoubleEl;
             bool HLT_DoubleEl_DZ;
             bool HLT_DoubleEl_DZ_2;
+            int HLT_SingleIsoEl8;
+            int HLT_SingleIsoEl17;
+            int HLT_SingleIsoMu8;
+            int HLT_SingleIsoMu17;
 
             trigger() {}
             ~trigger() {}
