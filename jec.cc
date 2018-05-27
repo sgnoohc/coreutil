@@ -100,7 +100,7 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
     resetObjects();
 
 //    cout << endl;
-    cout << "Create new JEC for " << filename << endl;
+    cout << "CoreUtil:: Create new JEC for " << filename << endl;
 
     // Set the current_filename to the provided filename
     current_filename = filename;
@@ -290,15 +290,15 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
 
     if (jetcorr_filenames_pfL1FastJetL2L3.size() == 0)
     {
-        cout << "Error, sample not found. Check the JECs." << endl;
+        cout << "CoreUtil:: Error, sample not found. Check the JECs." << endl;
         exit(100);
     }
 
     // Print what is used
-    cout << "JECs used:" << endl;
+    cout << "CoreUtil:: JECs used:" << endl;
     for (size_t jecind = 0; jecind < jetcorr_filenames_pfL1FastJetL2L3.size(); jecind++)
     {
-        cout << jetcorr_filenames_pfL1FastJetL2L3.at(jecind) << endl;
+        cout << "CoreUtil:: " << jetcorr_filenames_pfL1FastJetL2L3.at(jecind) << endl;
     }
 
     // Now create
