@@ -99,7 +99,7 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
     // Reset
     resetObjects();
 
-    cout << endl;
+//    cout << endl;
     cout << "Create new JEC for " << filename << endl;
 
     // Set the current_filename to the provided filename
