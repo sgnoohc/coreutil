@@ -12,7 +12,7 @@ void CoreUtil::track::process()
         if (cms3.pfcands_fromPV().at(pfind)  <= 1) { continue; }
         float cand_pt = cms3.pfcands_p4().at(pfind).pt();
         if (cand_pt < 5) { continue; }
-        float absiso03 = TrackIso(pfind, 0.3, 0.0, true, false);
+        float absiso03 = TrackIso(pfind, 0.3, 0.1, true, false);
         int  pdgId = abs(cms3.pfcands_particleId().at(pfind));
         if (absiso03 < min(0.2 * cand_pt, 8.0))
         {
