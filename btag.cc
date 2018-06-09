@@ -5,7 +5,7 @@ void CoreUtil::btag::setup(bool fastsim)
 {
     // setup btag calibration readers
     calib           = new BTagCalibration("csvv2", "coreutil/data/btagsf/CSVv2_Moriond17_B_H.csv"); // Moriond17 version of SFs
-    reader_fullsim = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central",{"up","down"});
+    reader_fullsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central",{"up","down"});
     reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_B, "comb");
     reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_C, "comb");
     reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_UDSG, "incl");
@@ -23,7 +23,7 @@ void CoreUtil::btag::setup(bool fastsim)
     {
         // setup btag calibration readers
         calib_fastsim     = new BTagCalibration("CSV", "coreutil/data/btagsf/fastsim_csvv2_ttbar_26_1_2017.csv"); // Moriond 17 25ns fastsim version of SFs
-        reader_fastsim = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central",{"up","down"});
+        reader_fastsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central",{"up","down"});
         reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_UDSG, "fastsim");
         reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_B, "fastsim");
         reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_C, "fastsim");
