@@ -3,6 +3,7 @@
 //########################################################################################
 void CoreUtil::btag::setup(bool fastsim)
 {
+    isfastsim = fastsim;
     // setup btag calibration readers
     calib           = new BTagCalibration("csvv2", "coreutil/data/btagsf/CSVv2_Moriond17_B_H.csv"); // Moriond17 version of SFs
     reader_fullsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central",{"up","down"});
@@ -55,9 +56,8 @@ void CoreUtil::btag::accumulateSF(int iJet, float pt, float eta)
 {
     float current_csv_val = cms3.getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags", iJet);
     bool isData = cms3.evt_isRealData();
-    bool isSMSScan = false;
 
-    float eff = getBtagEffFromFile(pt, eta, cms3.pfjets_hadronFlavour().at(iJet), isSMSScan);
+    float eff = getBtagEffFromFile(pt, eta, cms3.pfjets_hadronFlavour().at(iJet), isfastsim);
     BTagEntry::JetFlavor flavor = BTagEntry::FLAV_UDSG;
     if (abs(cms3.pfjets_hadronFlavour().at(iJet)) == 5) { flavor = BTagEntry::FLAV_B; }
     else if (abs(cms3.pfjets_hadronFlavour().at(iJet)) == 4) { flavor = BTagEntry::FLAV_C; }
@@ -66,7 +66,7 @@ void CoreUtil::btag::accumulateSF(int iJet, float pt, float eta)
     weight_UP = reader_fullsim->eval_auto_bounds("up",flavor,eta,pt);
     weight_DN = reader_fullsim->eval_auto_bounds("down",flavor,eta,pt);
     // extra SF for fastsim
-    if (isSMSScan)
+    if (isfastsim)
     {
         weight_cent *= reader_fastsim->eval_auto_bounds("central", flavor, eta, pt);
         weight_UP *= reader_fastsim->eval_auto_bounds("up", flavor, eta, pt);

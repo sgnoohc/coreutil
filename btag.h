@@ -56,6 +56,8 @@ namespace CoreUtil
             float btagprob_light_DN;
             float btagprob_mc;
 
+            bool isfastsim;
+
             btag(bool fastsim=false) { setup(fastsim); }
             ~btag() {}
             void setup(bool=false);
