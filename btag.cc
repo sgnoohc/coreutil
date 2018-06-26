@@ -18,7 +18,6 @@ void CoreUtil::btag::setup(bool fastsim)
     h_btag_eff_b    = (TH2D*) h_btag_eff_b_temp    -> Clone("h_btag_eff_b");
     h_btag_eff_c    = (TH2D*) h_btag_eff_c_temp    -> Clone("h_btag_eff_c");
     h_btag_eff_udsg = (TH2D*) h_btag_eff_udsg_temp -> Clone("h_btag_eff_udsg");
-    std::cout << "loaded fullsim btag SFs" << std::endl;
     // extra copy for fastsim -> fullsim SFs
     if (fastsim)
     {
@@ -36,8 +35,12 @@ void CoreUtil::btag::setup(bool fastsim)
         h_btag_eff_b_fastsim    = (TH2D*) h_btag_eff_b_fastsim_temp    -> Clone("h_btag_eff_b_fastsim");
         h_btag_eff_c_fastsim    = (TH2D*) h_btag_eff_c_fastsim_temp    -> Clone("h_btag_eff_c_fastsim");
         h_btag_eff_udsg_fastsim = (TH2D*) h_btag_eff_udsg_fastsim_temp -> Clone("h_btag_eff_udsg_fastsim");
-        std::cout << "loaded fastsim btag SFs" << std::endl;
-    } // if (isFastsim)
+        std::cout << "loaded fullsim and fastsim btag SFs" << std::endl;
+    }
+    else
+    {
+        std::cout << "loaded fullsim btag SFs" << std::endl;
+    }
 }
 
 //########################################################################################
