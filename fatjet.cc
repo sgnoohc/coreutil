@@ -7,7 +7,6 @@ void CoreUtil::fatjet::process(jec& jec_)
     corrs.clear();
     shifts.clear();
 
-    //std::cout << "cms3.ak8jets_p4().size() = " << cms3.ak8jets_p4().size() << std::endl;
     for (unsigned int iJet = 0; iJet < cms3.ak8jets_p4().size(); iJet++)
     {
         // note this uses the eta of the jet as stored in CMS3
