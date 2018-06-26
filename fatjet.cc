@@ -6,7 +6,7 @@ void CoreUtil::fatjet::process(jec& jec_)
     index.clear();
     corrs.clear();
     shifts.clear();
-
+    //adding this line as a test of github slack integration
     for (unsigned int iJet = 0; iJet < cms3.ak8jets_p4().size(); iJet++)
     {
         // note this uses the eta of the jet as stored in CMS3
