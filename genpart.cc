@@ -40,6 +40,7 @@ void CoreUtil::genpart::clear()
     genPart_charge.clear();
     genPart_motherId.clear();
     genPart_grandmaId.clear();
+    genPart_mother_idx.clear();
     ngenPart = 0;
     ngenLep = 0;
     ngenLepFromTau = 0;
@@ -64,6 +65,7 @@ void CoreUtil::genpart::addGenParticleToVectors(int iGen)
     genPart_charge.push_back(int(cms3.genps_charge()[iGen]));
     genPart_motherId.push_back(cms3.genps_id_simplemother()[iGen]);
     genPart_grandmaId.push_back(cms3.genps_id_simplegrandma()[iGen]);
+    genPart_mother_idx.push_back(cms3.genps_idx_simplemother()[iGen]);
     ngenPart++;
     if (cms3.genps_isMostlyLikePythia6Status3()[iGen])
         ngen_p6s3Part++;
