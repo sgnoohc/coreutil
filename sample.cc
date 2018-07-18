@@ -156,6 +156,7 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("/hadoop/cms/store/group/snt/run2_mc2017//ZZZ_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_CMS4_V09-04-13/"                                      )) return "zzz_incl_amcnlo";
     if (fname.Contains("/hadoop/cms/store/group/snt/run2_mc2017//tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_CMS4_V09-04-13/"              )) return "tzq_ll_amcnlo";
     if (fname.Contains("/hadoop/cms/store/group/snt/run2_mc2017//ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"                                               )) return "tth_nonbb_powheg";
+    if (fname.Contains("/hadoop/cms/store/group/snt/run2_mc2017//WpWpJJ_EWK-QCD_TuneCP5_13TeV-madgraph-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_CMS4_V09-04-13/"                           )) return "vbsww_madgraph";
 
     // Data 2016
     if (fname.Contains("DoubleEG_Run2016"                                                                                                                                                                                              )) return "data_ee";
