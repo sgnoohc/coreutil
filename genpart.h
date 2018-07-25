@@ -30,6 +30,7 @@ namespace CoreUtil
             std::vector<Int_t> genPart_motherId;
             std::vector<Int_t> genPart_grandmaId;
             std::vector<Int_t> genPart_mother_idx;
+            std::vector<Int_t> genPart_idx;
 
             Float_t gen_ht; // Used for W+jets Z+jets HT sliced samples
 
