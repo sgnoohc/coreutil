@@ -10,6 +10,7 @@ namespace CoreUtil
 
         public:
             bool HLT_DoubleMu;
+            bool HLT_DoubleMu_2017;
             bool HLT_MuEG;
             bool HLT_DoubleEl;
             bool HLT_DoubleEl_DZ;
