@@ -158,6 +158,30 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"                                               )) return "tth_nonbb_powheg";
     if (fname.Contains("WpWpJJ_EWK-QCD_TuneCP5_13TeV-madgraph-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_CMS4_V09-04-13/"                           )) return "vbsww_madgraph";
 
+    if (fname.Contains("QCD_Pt_15to20_bcToE_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v11-v1_MINIAODSIM_CMS4_V09-04-13/"           )) return "qcd_bctoe_pt15";
+    if (fname.Contains("QCD_Pt_20to30_bcToE_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v11-v1_MINIAODSIM_CMS4_V09-04-13/"           )) return "qcd_bctoe_pt20";
+    if (fname.Contains("QCD_Pt_30to80_bcToE_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v11-v1_MINIAODSIM_CMS4_V09-04-13/"           )) return "qcd_bctoe_pt30";
+    if (fname.Contains("QCD_Pt_80to170_bcToE_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v11-v1_MINIAODSIM_CMS4_V09-04-13/"          )) return "qcd_bctoe_pt80";
+    if (fname.Contains("QCD_Pt_170to250_bcToE_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v11-v1_MINIAODSIM_CMS4_V09-04-13/"         )) return "qcd_bctoe_pt170";
+    if (fname.Contains("QCD_Pt_250toInf_bcToE_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v11-v1_MINIAODSIM_CMS4_V09-04-13/"         )) return "qcd_bctoe_pt250";
+    if (fname.Contains("QCD_Pt-15to20_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"   )) return "qcd_mu_pt15";
+    if (fname.Contains("QCD_Pt-20to30_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"   )) return "qcd_mu_pt20";
+    if (fname.Contains("QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"   )) return "qcd_mu_pt30";
+    if (fname.Contains("QCD_Pt-50to80_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"   )) return "qcd_mu_pt50";
+    if (fname.Contains("QCD_Pt-80to120_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"  )) return "qcd_mu_pt80";
+    if (fname.Contains("QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/" )) return "qcd_mu_pt120";
+    if (fname.Contains("QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/" )) return "qcd_mu_pt170";
+    if (fname.Contains("QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/" )) return "qcd_mu_pt300";
+    if (fname.Contains("QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/" )) return "qcd_mu_pt600";
+    if (fname.Contains("QCD_Pt-15to20_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"      )) return "qcd_em_pt15";
+    if (fname.Contains("QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"      )) return "qcd_em_pt20";
+    if (fname.Contains("QCD_Pt-30to50_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"      )) return "qcd_em_pt30";
+    if (fname.Contains("QCD_Pt-50to80_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"      )) return "qcd_em_pt50";
+    if (fname.Contains("QCD_Pt-80to120_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"     )) return "qcd_em_pt80";
+    if (fname.Contains("QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"    )) return "qcd_em_pt120";
+    if (fname.Contains("QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"    )) return "qcd_em_pt170";
+    if (fname.Contains("QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_CMS4_V09-04-13/"    )) return "qcd_em_pt300";
+
     // Data 2016
     if (fname.Contains("DoubleEG_Run2016"                                                                                                                                                                                              )) return "data_ee";
     if (fname.Contains("MuonEG_Run2016"                                                                                                                                                                                                )) return "data_em";
