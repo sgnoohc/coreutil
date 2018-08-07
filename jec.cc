@@ -267,6 +267,10 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
     {
         setJECFileNames("Fall17_17Nov2017_V6", "MC");
     }
+    else if (filename.Contains("PhotophobicALP"))
+    {
+        setJECFileNames("Fall17_17Nov2017_V6", "MC");
+    }
 
     //-----------------------------------------------------------------------------------------------------------------------------------
     // 2016 fast sim

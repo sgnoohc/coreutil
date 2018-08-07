@@ -45,4 +45,6 @@ void CoreUtil::trigger::process()
     setHLTBranch("HLT_Ele23_CaloIdM_TrackIdM_PFJet30_v",  true, HLT_SingleIsoEl23 );
     setHLTBranch("HLT_Mu8_TrkIsoVVL_v",  true, HLT_SingleIsoMu8 );
     setHLTBranch("HLT_Mu17_TrkIsoVVL_v",  true, HLT_SingleIsoMu17 );
+
+    HLT_PFMET140_PFMHT140_IDTight = passHLTTriggerPattern("HLT_PFMET140_PFMHT140_IDTight_v");
 }

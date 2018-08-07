@@ -22,6 +22,7 @@ namespace CoreUtil
             int HLT_SingleIsoEl23;
             int HLT_SingleIsoMu8;
             int HLT_SingleIsoMu17;
+            bool HLT_PFMET140_PFMHT140_IDTight;
 
             trigger() {}
             ~trigger() {}
