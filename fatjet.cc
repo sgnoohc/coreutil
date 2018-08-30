@@ -10,7 +10,7 @@ void CoreUtil::fatjet::process(jec& jec_)
     {
         // note this uses the eta of the jet as stored in CMS3
         //  chance for small discrepancies if JEC changes direction slightly..
-        if (!isLoosePFJet_Summer16_v1(iJet)) { continue; }
+//        if (!isLoosePFJet_Summer16_v1(iJet)) { continue; }
 
         // get uncorrected jet p4 to use as input for corrections
         LorentzVector ak8jet_p4_uncor = cms3.ak8jets_p4()[iJet] * cms3.ak8jets_undoJEC()[iJet];

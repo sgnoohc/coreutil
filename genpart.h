@@ -117,7 +117,8 @@ namespace CoreUtil
             };
 
             // GenParticle tree reconstruction utility
-            std::vector<Higgs> reconstructHiggses();
+            std::vector<Higgs> reconstructHWWlvjj();
+            std::vector<Higgs> reconstructHbb();
 
             bool matchDecay(int iparent, int& ichild, int& jchild, int pid, std::function<bool(int, int)> ispairmatch=nullptr);
             static bool isPairPdgIDMatch(int id, int jd, std::vector<std::pair<int, int>> pairs);
@@ -125,6 +126,7 @@ namespace CoreUtil
             static bool isPairHadronicWDecay(int id, int jd);
             static bool isPairHiggsDecay(int id, int jd);
             static bool isPairHWWDecay(int id, int jd);
+            static bool isPairHbbDecay(int id, int jd);
 
 
     };

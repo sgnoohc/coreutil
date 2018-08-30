@@ -115,7 +115,7 @@ void CoreUtil::genpart::calcGenHT(int iGen)
 
 //##########################################################################################
 // Currently only support "HWWlvjj"
-std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHiggses()
+std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHWWlvjj()
 {
     // Return object
     std::vector<Higgs> higgses;
@@ -178,55 +178,40 @@ std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHiggses()
         }
     }
 
-//
-//    // Get particles with either mother or grandmother being 25 with status 22 and try to match
-//    for (unsigned int iGen = 0; iGen < cms3.genps_p4().size(); iGen++)
-//    {
-//        int idx = iGen;
-//        int motherid = cms3.genps_id_simplemother()[idx];
-//        int grandmaid = cms3.genps_id_simplegrandma()[idx];
-//        int id = cms3.genps_id()[idx];
-//        int status = cms3.genps_status()[idx];
-//        if (motherid != 25 && grandmaid != 25 && status != 22)
-//            continue;
-//        LorentzVector ip4 = cms3.genps_p4()[idx];
-//        for (unsigned int jGen = iGen + 1; jGen < cms3.genps_p4().size(); jGen++)
-//        {
-//            int jdx = jGen;
-//            int j_motherid = cms3.genps_id_simplemother()[jdx];
-//            int j_grandmaid = cms3.genps_id_simplegrandma()[jdx];
-//            int j_id = cms3.genps_id()[jdx];
-//            int j_status = cms3.genps_status()[jdx];
-//            if (j_motherid != 25 && j_grandmaid != 25 && j_status != 22)
-//                continue;
-//            if (j_id != -id)
-//                continue;
-//            LorentzVector jp4 = cms3.genps_p4()[jdx];
-////            std::cout <<  " fabs((ip4+jp4).mass()): " << fabs((ip4+jp4).mass()) <<  std::endl;
-//            if (fabs((ip4 + jp4).mass() - 125) < 2)
-//            {
-//                HiggsConstituent ip(idx);
-//                HiggsConstituent jp(jdx);
-//                ip.isstar = isStar(idx);
-//                jp.isstar = isStar(jdx);
-//                for (unsigned int ih = 0; ih < higgses.size(); ++ih)
-//                {
-////                    printLorentzVector(ip.p4);
-////                    printLorentzVector(jp.p4);
-////                    printLorentzVector(ip.p4+jp.p4);
-////                    printLorentzVector(higgses[ih].p4);
-////                    std::cout <<  " ROOT::Math::VectorUtil::DeltaR(ip.p4+jp.p4,higgses[ih].p4): " << ROOT::Math::VectorUtil::DeltaR(ip.p4+jp.p4,higgses[ih].p4) <<  std::endl;
-//                    if (ROOT::Math::VectorUtil::DeltaR(ip.p4 + jp.p4, higgses[ih].p4) < 1.0
-//                            && higgses[ih].HiggsDaughters.size() == 0)
-//                    {
-//                        higgses[ih].HiggsDaughters.push_back(ip.p4.pt() > jp.p4.pt() ? ip : jp);
-//                        higgses[ih].HiggsDaughters.push_back(ip.p4.pt() > jp.p4.pt() ? jp : ip);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//    }
+    return higgses;
+}
+
+//##########################################################################################
+// Currently only support "HWWlvjj"
+std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHbb()
+{
+    // Return object
+    std::vector<Higgs> higgses;
+
+    // Get all Higgs and create Higgs object
+    // For Higgs get the status 62
+    for (unsigned int idx = 0; idx < cms3.genps_p4().size(); idx++)
+    {
+        if (abs(cms3.genps_id()[idx]) == 25 && cms3.genps_status()[idx] == 62)
+        {
+            Higgs higgs;
+            higgs.p4 = cms3.genps_p4()[idx];
+            higgs.id = 25;
+            higgs.isstar = false;
+            higgs.islead = false;
+            higgs.idx = idx;
+            higgses.push_back(higgs);
+        }
+    }
+
+    for (unsigned int ih = 0; ih < higgses.size(); ih++)
+    {
+        int ichild = -1;
+        int jchild = -1;
+        if (matchDecay(higgses[ih].idx, ichild, jchild, 25, isPairHbbDecay))
+            higgses[ih].addHiggsDaughters(ichild, jchild);
+    }
+
     return higgses;
 }
 
@@ -350,6 +335,14 @@ bool CoreUtil::genpart::isPairHWWDecay(int id, int jd)
     return isPairPdgIDMatch(id, jd, pairs);
 }
 
+//##########################################################################################
+bool CoreUtil::genpart::isPairHbbDecay(int id, int jd)
+{
+    std::vector<std::pair<int, int>> pairs;
+    pairs.push_back(make_pair(5, -5));
+    return isPairPdgIDMatch(id, jd, pairs);
+}
+
 
 //##########################################################################################
 bool CoreUtil::genpart::isPairHiggsDecay(int id, int jd)
@@ -392,7 +385,7 @@ bool CoreUtil::genpart::isStar(int i)
     int absid = abs(cms3.genps_id()[i]);
     switch (absid)
     {
-        case 24: if (abs(cms3.genps_p4()[i].mass() - 80.) > 17.5) return true; break;
+        case 24: if (cms3.genps_p4()[i].mass() < 62.5           ) return true; break;
         case 23: if (abs(cms3.genps_p4()[i].mass() - 90.) > 27.5) return true; break;
     }
     return false;

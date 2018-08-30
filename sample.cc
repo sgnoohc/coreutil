@@ -5,6 +5,7 @@ CoreUtil::sample::CMS4Type CoreUtil::sample::CMS4Version(TString fname)
 {
     if (fname.Contains("CMS4_V00-00-02_data2016"  )) return k2016Data;
     if (fname.Contains("CMS4_V00-00-02_2017Sep27" )) return k2016MC;
+    if (fname.Contains("CMS4_V00-00-02_AllPF"     )) return k2016MC;
     if (fname.Contains("CMS4_V09-04-12"           )) return k2017Data;
     if (fname.Contains("CMS4_V09-04-13"           )) return k2017MC;
     if (fname.Contains("CMS4_V09-04-17"           )) return k2017MC;
@@ -107,11 +108,12 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("QCD_Pt_80to170_bcToE_TuneCUETP8M1_13TeV_pythia8_RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                              )) return "qcd_bctoe_pt80";
     if (fname.Contains("QCD_Pt_170to250_bcToE_TuneCUETP8M1_13TeV_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                    )) return "qcd_bctoe_pt170";
     if (fname.Contains("QCD_Pt_250toInf_bcToE_TuneCUETP8M1_13TeV_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                    )) return "qcd_bctoe_pt250";
-    if (fname.Contains("GluGluHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                             )) return "ggh_hww";
+    if (fname.Contains("GluGluHToBB_M125_13TeV_powheg_pythia8"                                                                                                                             )) return "ggh_hbb";
+    if (fname.Contains("GluGluHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                             )) return "ggh_hwwlvjj";
     if (fname.Contains("GluGluZH_HToWW_M125_13TeV_powheg_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                            )) return "ggzh_hww";
     if (fname.Contains("HWminusJ_HToWW_M125_13TeV_powheg_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                            )) return "hwmj_hww";
     if (fname.Contains("HZJ_HToWW_M125_13TeV_powheg_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                                 )) return "hzj_hww";
-    if (fname.Contains("VBFHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                )) return "vbf_hww";
+    if (fname.Contains("VBFHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                )) return "vbf_hwwlvjj";
 
 
     // Signal sample 2016
@@ -258,8 +260,9 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("JetHT_Run2017E-31Mar2018-v1_MINIAOD"  )) return "data_jet_Run2017E";
     if (fname.Contains("JetHT_Run2017F-31Mar2018-v1_MINIAOD"  )) return "data_jet_Run2017F";
 
-    std::cout << TString::Format("[CoreUtil::sample] Unrecognized sample = %s", fname.Data()) << std::endl;
-    abort();
+//    std::cout << TString::Format("[CoreUtil::sample] Unrecognized sample = %s", fname.Data()) << std::endl;
+    return "unknown";
+    //abort();
 
 }
 
