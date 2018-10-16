@@ -112,3 +112,381 @@ void CoreUtil::genpart::calcGenHT(int iGen)
     }
 
 }
+
+//##########################################################################################
+// Currently only support "HWWlvjj"
+std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHiggses()
+{
+    // Return object
+    std::vector<Higgs> higgses;
+
+    // Get all Higgs and create Higgs object
+    // For Higgs get the status 62
+    for (unsigned int idx = 0; idx < cms3.genps_p4().size(); idx++)
+    {
+//        printParticle(idx);
+        if (abs(cms3.genps_id()[idx]) == 25 && cms3.genps_status()[idx] == 62)
+        {
+            Higgs higgs;
+            higgs.p4 = cms3.genps_p4()[idx];
+            higgs.id = 25;
+            higgs.isstar = false;
+            higgs.islead = false;
+            higgs.idx = idx;
+            higgses.push_back(higgs);
+        }
+    }
+
+    for (unsigned int ih = 0; ih < higgses.size(); ih++)
+    {
+        int ichild = -1;
+        int jchild = -1;
+        if (matchDecay(higgses[ih].idx, ichild, jchild, 25, isPairHWWDecay))
+            higgses[ih].addHiggsDaughters(ichild, jchild);
+//        std::cout <<  " ichild: " << ichild <<  std::endl;
+//        std::cout <<  " jchild: " << jchild <<  std::endl;
+//        std::cout << " searching grand daughters " << std::endl;
+        for (unsigned int id = 0; id < higgses[ih].HiggsDaughters.size(); ++id)
+        {
+//            std::cout <<  " id: " << id <<  std::endl;
+//            std::cout <<  " higgses[ih].HiggsDaughters[id].p4.mass(): " << higgses[ih].HiggsDaughters[id].p4.mass() <<  std::endl;
+//            std::cout <<  " higgses[ih].HiggsDaughters[id].id: " << higgses[ih].HiggsDaughters[id].id <<  std::endl;
+//            std::cout <<  " higgses[ih].HiggsDaughters[id].idx: " << higgses[ih].HiggsDaughters[id].idx <<  std::endl;
+//            std::cout <<  " cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass(): " << cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass() <<  std::endl;
+            int igrandchild = -1;
+            int jgrandchild = -1;
+            if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairLeptonicWDecay))
+            //if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, -999, isPairLeptonicWDecay))
+            {
+                higgses[ih].addHiggsGrandDaughters(igrandchild, jgrandchild, id);
+            }
+            else if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairHadronicWDecay))
+            //else if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, -999, isPairHadronicWDecay))
+            {
+                higgses[ih].addHiggsGrandDaughters(igrandchild, jgrandchild, id);
+            }
+            else
+            {
+                std::cout <<  " higgses[ih].HiggsDaughters[id].idx: " << higgses[ih].HiggsDaughters[id].idx <<  std::endl;
+                std::cout <<  " higgses[ih].HiggsDaughters[id].id: " << higgses[ih].HiggsDaughters[id].id <<  std::endl;
+                higgses[ih].HiggsDaughters[id].print();
+                std::cout << "did not find any" << std::endl;
+                printAllParticles();
+                exit(-1);
+            }
+
+        }
+    }
+
+//
+//    // Get particles with either mother or grandmother being 25 with status 22 and try to match
+//    for (unsigned int iGen = 0; iGen < cms3.genps_p4().size(); iGen++)
+//    {
+//        int idx = iGen;
+//        int motherid = cms3.genps_id_simplemother()[idx];
+//        int grandmaid = cms3.genps_id_simplegrandma()[idx];
+//        int id = cms3.genps_id()[idx];
+//        int status = cms3.genps_status()[idx];
+//        if (motherid != 25 && grandmaid != 25 && status != 22)
+//            continue;
+//        LorentzVector ip4 = cms3.genps_p4()[idx];
+//        for (unsigned int jGen = iGen + 1; jGen < cms3.genps_p4().size(); jGen++)
+//        {
+//            int jdx = jGen;
+//            int j_motherid = cms3.genps_id_simplemother()[jdx];
+//            int j_grandmaid = cms3.genps_id_simplegrandma()[jdx];
+//            int j_id = cms3.genps_id()[jdx];
+//            int j_status = cms3.genps_status()[jdx];
+//            if (j_motherid != 25 && j_grandmaid != 25 && j_status != 22)
+//                continue;
+//            if (j_id != -id)
+//                continue;
+//            LorentzVector jp4 = cms3.genps_p4()[jdx];
+////            std::cout <<  " fabs((ip4+jp4).mass()): " << fabs((ip4+jp4).mass()) <<  std::endl;
+//            if (fabs((ip4 + jp4).mass() - 125) < 2)
+//            {
+//                HiggsConstituent ip(idx);
+//                HiggsConstituent jp(jdx);
+//                ip.isstar = isStar(idx);
+//                jp.isstar = isStar(jdx);
+//                for (unsigned int ih = 0; ih < higgses.size(); ++ih)
+//                {
+////                    printLorentzVector(ip.p4);
+////                    printLorentzVector(jp.p4);
+////                    printLorentzVector(ip.p4+jp.p4);
+////                    printLorentzVector(higgses[ih].p4);
+////                    std::cout <<  " ROOT::Math::VectorUtil::DeltaR(ip.p4+jp.p4,higgses[ih].p4): " << ROOT::Math::VectorUtil::DeltaR(ip.p4+jp.p4,higgses[ih].p4) <<  std::endl;
+//                    if (ROOT::Math::VectorUtil::DeltaR(ip.p4 + jp.p4, higgses[ih].p4) < 1.0
+//                            && higgses[ih].HiggsDaughters.size() == 0)
+//                    {
+//                        higgses[ih].HiggsDaughters.push_back(ip.p4.pt() > jp.p4.pt() ? ip : jp);
+//                        higgses[ih].HiggsDaughters.push_back(ip.p4.pt() > jp.p4.pt() ? jp : ip);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//    }
+    return higgses;
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::matchDecay(int iparent, int& ichild, int& jchild, int pid, std::function<bool(int, int)> ispairmatch)
+{
+    LorentzVector parent_p4 = cms3.genps_p4()[iparent];
+
+    // Get particles with either mother or grandmother being 25 with status 22 and try to match
+
+    // Loop over the gen particles
+    for (unsigned int idx = 0; idx < cms3.genps_p4().size(); idx++)
+    {
+
+        // Set the i-th particle variables
+        int motherid  = cms3.genps_id_simplemother()[idx];
+        int grandmaid = cms3.genps_id_simplegrandma()[idx];
+        int id        = cms3.genps_id()[idx];
+        int status    = cms3.genps_status()[idx];
+
+        // Check the iparticle is from whatever the parent i am looking for (if pid == -999, don't do anything)
+        if (pid != -999 && (motherid != pid && grandmaid != pid))
+            continue;
+
+        // Set the i-th particle 4 vector
+        LorentzVector ip4 = cms3.genps_p4()[idx];
+
+        // Loop over the other leg of the decay
+        for (unsigned int jdx = idx + 1; jdx < cms3.genps_p4().size(); jdx++)
+        {
+
+            // Set the j-th particle variable
+            int j_motherid = cms3.genps_id_simplemother()[jdx];
+            int j_grandmaid = cms3.genps_id_simplegrandma()[jdx];
+            int j_id = cms3.genps_id()[jdx];
+            int j_status = cms3.genps_status()[jdx];
+
+            // Check the iparticle is from whatever the parent i am looking for (if pid == -999, don't do anything)
+            if (pid != -999 && (j_motherid != pid && j_grandmaid != pid))
+                continue;
+
+            // Check the children id combo
+            if (ispairmatch)
+                if (!(ispairmatch(id, j_id)))
+                    continue;
+
+            // But require at least that the mother matches
+            if (j_motherid != motherid)
+                continue;
+
+            // Require the mother is not some hadron
+            if (abs(j_motherid) > 25 || abs(motherid) > 25)
+                continue;
+
+            // Set the j-th particle 4 vector
+            LorentzVector jp4 = cms3.genps_p4()[jdx];
+
+//            printLorentzVector(ip4);
+//            printLorentzVector(jp4);
+//            printLorentzVector(parent_p4);
+//            std::cout <<  " fabs((ip4+jp4).mass()): " << fabs((ip4+jp4).mass()) <<  " parent_p4.mass(): " << parent_p4.mass() <<  std::endl;
+            if (fabs((ip4 + jp4).mass() - parent_p4.mass()) < 5)
+            {
+
+                if (ichild == -1 && jchild == -1)
+                {
+                    ichild = ip4.pt() > jp4.pt() ? idx : jdx;
+                    jchild = ip4.pt() > jp4.pt() ? jdx : idx;
+                    break;
+                }
+            }
+        }
+        if (ichild != -1 && jchild != -1)
+            break;
+    }
+    if (ichild != -1 && jchild != -1)
+        return true;
+    else
+        return false;
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::isPairLeptonicWDecay(int id, int jd)
+{
+    std::vector<std::pair<int, int>> pairs;
+    pairs.push_back(make_pair(11, -12));
+    pairs.push_back(make_pair(13, -14));
+    pairs.push_back(make_pair(15, -16));
+    pairs.push_back(make_pair(-11, 12));
+    pairs.push_back(make_pair(-13, 14));
+    pairs.push_back(make_pair(-15, 16));
+    return isPairPdgIDMatch(id, jd, pairs);
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::isPairHadronicWDecay(int id, int jd)
+{
+    // 2 4 6
+    // 1 3 5
+    std::vector<std::pair<int, int>> pairs;
+    pairs.push_back(make_pair(1, -2));
+    pairs.push_back(make_pair(1, -4));
+    pairs.push_back(make_pair(2, -1));
+    pairs.push_back(make_pair(2, -3));
+    pairs.push_back(make_pair(2, -5));
+    pairs.push_back(make_pair(3, -2));
+    pairs.push_back(make_pair(3, -4));
+    pairs.push_back(make_pair(4, -1));
+    pairs.push_back(make_pair(4, -3));
+    pairs.push_back(make_pair(4, -5));
+    pairs.push_back(make_pair(5, -2));
+    pairs.push_back(make_pair(5, -4));
+    return isPairPdgIDMatch(id, jd, pairs);
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::isPairHWWDecay(int id, int jd)
+{
+    std::vector<std::pair<int, int>> pairs;
+    pairs.push_back(make_pair(24, -24));
+    return isPairPdgIDMatch(id, jd, pairs);
+}
+
+
+//##########################################################################################
+bool CoreUtil::genpart::isPairHiggsDecay(int id, int jd)
+{
+    std::vector<std::pair<int, int>> pairs;
+    pairs.push_back(make_pair(1, -1));
+    pairs.push_back(make_pair(2, -2));
+    pairs.push_back(make_pair(3, -3));
+    pairs.push_back(make_pair(4, -4));
+    pairs.push_back(make_pair(5, -5));
+    pairs.push_back(make_pair(6, -6));
+    pairs.push_back(make_pair(11, -11));
+    pairs.push_back(make_pair(13, -13));
+    pairs.push_back(make_pair(15, -15));
+    pairs.push_back(make_pair(21, 21));
+    pairs.push_back(make_pair(22, 22));
+    pairs.push_back(make_pair(23, 23));
+    pairs.push_back(make_pair(24, -24));
+    return isPairPdgIDMatch(id, jd, pairs);
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::isPairPdgIDMatch(int id, int jd, std::vector<std::pair<int, int>> pairs)
+{
+    for (unsigned ipair = 0; ipair < pairs.size(); ++ipair)
+    {
+        if (id == pairs[ipair].first && jd == pairs[ipair].second)
+            return true;
+        if (jd == pairs[ipair].first && id == pairs[ipair].second)
+            return true;
+    }
+    return false;
+}
+
+//##########################################################################################
+// The motivation is driven by Higgs decay going off-shell
+// Not necessarily intended for SUSY or others
+bool CoreUtil::genpart::isStar(int i)
+{
+    int absid = abs(cms3.genps_id()[i]);
+    switch (absid)
+    {
+        case 24: if (abs(cms3.genps_p4()[i].mass() - 80.) > 17.5) return true; break;
+        case 23: if (abs(cms3.genps_p4()[i].mass() - 90.) > 27.5) return true; break;
+    }
+    return false;
+}
+
+
+//##########################################################################################
+bool CoreUtil::genpart::isMotherFromBoson(int i)
+{
+    if (abs(cms3.genps_id_simplegrandma().at(i)) == 23)
+        return true;
+    if (abs(cms3.genps_id_simplegrandma().at(i)) == 24)
+        return true;
+    if (abs(cms3.genps_id_simplegrandma().at(i)) == 25)
+        return true;
+    return false;
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::isLeptonFromBoson(int i)
+{
+    if (cms3.genps_status().at(i) == 1 && (abs(cms3.genps_id().at(i)) == 11 || abs(cms3.genps_id().at(i)) == 13) && isMotherFromBoson(i))
+        return true;
+    if (cms3.genps_status().at(i) == 23 && (abs(cms3.genps_id().at(i)) == 15) && isMotherFromBoson(i))
+        return true;
+    return false;
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::isNeutrinoFromBoson(int i)
+{
+    if (cms3.genps_status().at(i) == 1 && (abs(cms3.genps_id().at(i)) == 12 || abs(cms3.genps_id().at(i)) == 14 || abs(cms3.genps_id().at(i)) == 16) && isMotherFromBoson(i))
+        return true;
+    return false;
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::isQuarkFromBoson(int i)
+{
+    if (
+            (abs(cms3.genps_id().at(i)) >= 1 && abs(cms3.genps_id().at(i)) <= 5)
+            && (cms3.genps_status().at(i) == 23 || cms3.genps_status().at(i) == 1)
+            && (abs(cms3.genps_id_simplemother().at(i)) == 24 || abs(cms3.genps_id_simplemother().at(i)) == 23 || abs(cms3.genps_id_simplemother().at(i)) == 25)
+       )
+        return true;
+    return false;
+}
+
+//##########################################################################################
+void CoreUtil::genpart::printParticleOfInterest()
+{
+    printIncomingPartons();
+    printIntermediatePartons();
+    printOutgoingPartons();
+    printLeptonFromBosons();
+    printNeutrinoFromBosons();
+    printQuarkFromBosons();
+}
+
+//##########################################################################################
+void CoreUtil::genpart::printPartonsWithCondition(TString message, std::function<bool(int)> pass)
+{
+    std::cout << message << std::endl;
+    for (unsigned int i = 0; i < genPart_idx.size(); ++i)
+    {
+        int idx = genPart_idx.at(i);
+        if (pass)
+        {
+            if (pass(idx))
+                printParticle(idx);
+        }
+        else
+        {
+            printParticle(idx);
+        }
+    }
+}
+
+
+//##########################################################################################
+void CoreUtil::genpart::printParticle(int i)
+{
+    int pdgId = cms3.genps_id()[i];
+    int status = cms3.genps_status()[i];
+    int motherId = cms3.genps_id_simplemother()[i];
+    int grandmaId = cms3.genps_id_simplegrandma()[i];
+    LorentzVector p4 = cms3.genps_p4()[i];
+    printf("pdgId: %6d motherId: %6d grandmaId: %6d status: %4d p4.pt(): %8.3f p4.eta(): %8.3f p4.phi(): %8.3f p4.mass(): %8.3f p4.energy(): %8.3f\n",
+            pdgId, motherId, grandmaId, status, p4.pt(), p4.eta(), p4.phi(), p4.mass(), p4.energy());
+//    std::cout <<  " pdgId: " << pdgId <<  " motherId: " << motherId <<  " grandmaId: " << grandmaId <<  " status: " << status <<  " p4.pt(): " << p4.pt() <<  " p4.eta(): " << p4.eta() <<  " p4.phi(): " << p4.phi() <<  std::endl;
+}
+
+//##########################################################################################
+void CoreUtil::genpart::printLorentzVector(LorentzVector i)
+{
+    std::cout <<  " i.pt(): " << i.pt() <<  " i.eta(): " << i.eta() <<  " i.phi(): " << i.phi() <<  " i.mass(): " << i.mass() <<  " i.energy(): " << i.energy() <<  std::endl;
+}
