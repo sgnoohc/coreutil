@@ -145,7 +145,7 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
         jetcorr_filenames_pfL1FastJetL2L3.push_back("coreutil/data/jetCorrections/source_80X/MC/Spring16_25nsV1_MC_L3Absolute_AK4PFchs.txt");
         jecUnc = new JetCorrectionUncertainty("coreutil/data/jetCorrections/source_80X/MC/Spring16_25nsV1_MC_Uncertainty_AK4PFchs.txt");
     }
-    else if (filename.Contains("Summer16") || filename.Contains("TEST") || filename.Contains("PrivateWWW") || filename.Contains("TChiWH_HToVVTauTau_HToBB_mChargino200_mLSP50"))
+    else if (filename.Contains("Summer16") || filename.Contains("TEST") || filename.Contains("PrivateWWW") || filename.Contains("TChiWH_HToVVTauTau_HToBB_mChargino200_mLSP50") || filename.Contains("WWW_BW"))
     {
         // files for 80X MC, Summer16 (Moriond17) production
         jetcorr_filenames_pfL1.clear();

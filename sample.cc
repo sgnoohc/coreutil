@@ -8,6 +8,7 @@ CoreUtil::sample::CMS4Type CoreUtil::sample::CMS4Version(TString fname)
     if (fname.Contains("CMS4_V09-04-12"           )) return k2017Data;
     if (fname.Contains("CMS4_V09-04-13"           )) return k2017MC;
     if (fname.Contains("CMS4_V09-04-17"           )) return k2017MC;
+    if (fname.Contains("CMS4_V00-00-02"           )) return k2016MC;
 
     std::cout << TString::Format("[CoreUtil::sample] Can't parse which CMS4 version it is from sample = %s", fname.Data()) << std::endl;
     abort();
@@ -113,6 +114,7 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("TEST-www_wwwext-Private80X-v1"                                                                                                                                                                                 )) return "www_2l_ext1_mia_cms3";
     if (fname.Contains("PrivateWWW_www-cms4"                                                                                                                                                                                           )) return "www_2l_"; // the mia or ext1_mia is not needed. If you add this it actually screws it up
     if (fname.Contains("PrivateWWW_wwwext-cms4"                                                                                                                                                                                        )) return "www_2l_"; // the mia or ext1_mia is not needed. If you add this it actually screws it up
+    if (fname.Contains("WWW_BW"                                                                                                                                                                                                        )) return "www_bw_";
 
     // BSM models 2016
     if (fname.Contains("DoublyChargedHiggsGMmodel_HWW"                                                                                                                                                                                 )) return "hpmpm_hww";
