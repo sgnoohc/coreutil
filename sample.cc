@@ -115,6 +115,14 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("HZJ_HToWW_M125_13TeV_powheg_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                                 )) return "hzj_hww";
     if (fname.Contains("VBFHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                )) return "vbf_hww";
 
+    if (fname.Contains("WZTo3LNu_0Jets_MLL-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))      return "wz_3lnu0jetmll50_madgraph";
+    if (fname.Contains("WZTo3LNu_1Jets_MLL-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))      return "wz_3lnu1jetmll50_madgraph";
+    if (fname.Contains("WZTo3LNu_2Jets_MLL-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))      return "wz_3lnu2jetmll50_madgraph";
+    if (fname.Contains("WZTo3LNu_3Jets_MLL-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))      return "wz_3lnu3jetmll50_madgraph";
+    if (fname.Contains("WZTo3LNu_0Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2_MINIAODSIM"))   return "wz_3lnu0jetmll4_madgraph";
+    if (fname.Contains("WZTo3LNu_1Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2_MINIAODSIM"))   return "wz_3lnu1jetmll4_madgraph";
+    if (fname.Contains("WZTo3LNu_2Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2_MINIAODSIM"))   return "wz_3lnu2jetmll4_madgraph";
+    if (fname.Contains("WZTo3LNu_3Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))   return "wz_3lnu3jetmll4_madgraph";
 
     // Signal sample 2016
     if (fname.Contains("TEST-www_www-Private80X-v1"                                                                                                                                                                                    )) return "www_2l_mia_cms3";

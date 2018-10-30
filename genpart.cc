@@ -91,7 +91,8 @@ void CoreUtil::genpart::addGenParticleToVectors(int iGen)
             ngenLepFromTau++;
         }
         // leptons from W/Z/H
-        else if (motherId == 25 || motherId == 24 || motherId == 23)
+        //else if (motherId == 25 || motherId == 24 || motherId == 23)
+        else
         {
             ngenLep++;
         }

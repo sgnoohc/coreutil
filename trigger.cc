@@ -46,5 +46,29 @@ void CoreUtil::trigger::process()
     setHLTBranch("HLT_Mu8_TrkIsoVVL_v",  true, HLT_SingleIsoMu8 );
     setHLTBranch("HLT_Mu17_TrkIsoVVL_v",  true, HLT_SingleIsoMu17 );
 
+    setHLTBranch("HLT_Ele8_CaloIdM_TrackIdM_PFJet30_v" ,  true, HLT_SingleEl8_2017 );
+    setHLTBranch("HLT_Ele17_CaloIdM_TrackIdM_PFJet30_v",  true, HLT_SingleEl17_2017 );
+    setHLTBranch("HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_v" ,  true, HLT_SingleIsoEl8_2017 );
+    setHLTBranch("HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v",  true, HLT_SingleIsoEl23_2017 );
+    setHLTBranch("HLT_Mu8_TrkIsoVVL_v",  true, HLT_SingleIsoMu8_2017 );
+    setHLTBranch("HLT_Mu17_TrkIsoVVL_v",  true, HLT_SingleIsoMu17_2017 );
+
+    // https://github.com/cmstas/FTAnalysis/blob/run2/analysis/fakes/derivation/ScanChain_fast.C#L831-L840
+    // //trigger selection
+    // if (abs(id())==11) {
+    //     if (useIsoTrigs) {
+    //         if (HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30()<=0 && HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30()<=0) continue;
+    //     } else {
+    //         if (HLT_Ele8_CaloIdM_TrackIdM_PFJet30()<=0 && HLT_Ele17_CaloIdM_TrackIdM_PFJet30()<=0) continue;
+    //     }
+    // }
+    // if (abs(id())==13) {
+    //     if (useIsoTrigs) {
+    //         if (HLT_Mu8_TrkIsoVVL()<=0 && HLT_Mu17_TrkIsoVVL()<=0) continue;
+    //     } else {
+    //         if (HLT_Mu8()<=0 && HLT_Mu17()<=0) continue;
+    //     }
+    // }
+
     HLT_PFMET140_PFMHT140_IDTight = passHLTTriggerPattern("HLT_PFMET140_PFMHT140_IDTight_v");
 }
