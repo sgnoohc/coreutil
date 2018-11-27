@@ -124,6 +124,20 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("WZTo3LNu_2Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2_MINIAODSIM"))   return "wz_3lnu2jetmll4_madgraph";
     if (fname.Contains("WZTo3LNu_3Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))   return "wz_3lnu3jetmll4_madgraph";
 
+    if (fname.Contains("WZTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8_" )) return "wz_lnqq_amcnlo";
+    if (fname.Contains("WZTo1L3Nu_13TeV_amcatnloFXFX_madspin_pythia8_" )) return "wz_1l3n_amcnlo";
+
+    if (fname.Contains("WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8_"))                return "wz_2l2q_amcatnlo" ;
+    if (fname.Contains("WZTo3LNu_0Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8_")) return "wz_3lv_0jmll4_madgraph" ;
+    if (fname.Contains("WZTo3LNu_0Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8_"))    return "wz_3lv_0jmll50_madgraph" ;
+    if (fname.Contains("WZTo3LNu_1Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8_")) return "wz_3lv_1jmll4_madgraph" ;
+    if (fname.Contains("WZTo3LNu_1Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8_"))    return "wz_3lv_1jmll50_madgraph" ;
+    if (fname.Contains("WZTo3LNu_2Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8_")) return "wz_3lv_2jmll4_madgraph" ;
+    if (fname.Contains("WZTo3LNu_2Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8_"))    return "wz_3lv_2jmll50_madgraph" ;
+    if (fname.Contains("WZTo3LNu_3Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8_")) return "wz_3lv_3jmll4_madgraph" ;
+    if (fname.Contains("WZTo3LNu_3Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8_"))    return "wz_3lv_3jmll50_madgraph" ;
+    if (fname.Contains("WZTo3LNu_13TeV-powheg-pythia8_"))                              return "wz_3lv_powheg";
+
     // Signal sample 2016
     if (fname.Contains("TEST-www_www-Private80X-v1"                                                                                                                                                                                    )) return "www_2l_mia_cms3";
     if (fname.Contains("TEST-www_wwwext-Private80X-v1"                                                                                                                                                                                 )) return "www_2l_ext1_mia_cms3";
@@ -194,6 +208,7 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt120";
     if (fname.Contains("QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt170";
     if (fname.Contains("QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt300";
+    if (fname.Contains("QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt470";
     if (fname.Contains("QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt600";
     if (fname.Contains("QCD_Pt-15to20_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM"      )) return "qcd_em_pt15";
     if (fname.Contains("QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM"      )) return "qcd_em_pt20";
