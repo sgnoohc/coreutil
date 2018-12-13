@@ -8,6 +8,8 @@
 #include "TH2.h"
 #include "TFile.h"
 
+#include <iostream>
+
 #define JET_PT_MIN 20
 #define JET_ETA_MAX 5
 
@@ -57,12 +59,15 @@ namespace CoreUtil
             float btagprob_mc;
 
             bool isfastsim;
+            bool isdeepcsv;
+            int year;
 
-            btag(bool fastsim=false) { setup(fastsim); }
+            btag(bool fastsim=false, bool isdeepcsv=false, int year=2016) { setup(fastsim, isdeepcsv, year); }
             ~btag() {}
-            void setup(bool=false);
+            void setup(bool=false, bool=false, int=2016);
             void clearSF();
             void accumulateSF(int iJet, float pt, float eta);
+            void accumulateSF2016CSVv2(int iJet, float pt, float eta);
             float getBtagEffFromFile(float pt, float eta, int mcFlavour, bool isFastsim);
 
     };

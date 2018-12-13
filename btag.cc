@@ -1,45 +1,59 @@
 #include "btag.h"
 
 //########################################################################################
-void CoreUtil::btag::setup(bool fastsim)
+void CoreUtil::btag::setup(bool fastsim, bool deepcsv, int yr)
 {
     isfastsim = fastsim;
-    // setup btag calibration readers
-    calib           = new BTagCalibration("csvv2", "coreutil/data/btagsf/CSVv2_Moriond17_B_H.csv"); // Moriond17 version of SFs
-    reader_fullsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central",{"up","down"});
-    reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_B, "comb");
-    reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_C, "comb");
-    reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_UDSG, "incl");
-    // get btag efficiencies
-    TFile * f_btag_eff           = new TFile("coreutil/data/btagsf/btageff__ttbar_powheg_pythia8_25ns_Moriond17.root");
-    TH2D  * h_btag_eff_b_temp    = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_b");
-    TH2D  * h_btag_eff_c_temp    = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_c");
-    TH2D  * h_btag_eff_udsg_temp = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
-    h_btag_eff_b    = (TH2D*) h_btag_eff_b_temp    -> Clone("h_btag_eff_b");
-    h_btag_eff_c    = (TH2D*) h_btag_eff_c_temp    -> Clone("h_btag_eff_c");
-    h_btag_eff_udsg = (TH2D*) h_btag_eff_udsg_temp -> Clone("h_btag_eff_udsg");
-    // extra copy for fastsim -> fullsim SFs
-    if (fastsim)
+    isdeepcsv = deepcsv;
+    year = yr;
+    if (year == 2016)
     {
-        // setup btag calibration readers
-        calib_fastsim     = new BTagCalibration("CSV", "coreutil/data/btagsf/fastsim_csvv2_ttbar_26_1_2017.csv"); // Moriond 17 25ns fastsim version of SFs
-        reader_fastsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central",{"up","down"});
-        reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_UDSG, "fastsim");
-        reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_B, "fastsim");
-        reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_C, "fastsim");
-        // get btag efficiencies
-        TFile * f_btag_eff_fastsim           = new TFile("coreutil/data/btagsf/btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root");
-        TH2D  * h_btag_eff_b_fastsim_temp    = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_b");
-        TH2D  * h_btag_eff_c_fastsim_temp    = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_c");
-        TH2D  * h_btag_eff_udsg_fastsim_temp = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
-        h_btag_eff_b_fastsim    = (TH2D*) h_btag_eff_b_fastsim_temp    -> Clone("h_btag_eff_b_fastsim");
-        h_btag_eff_c_fastsim    = (TH2D*) h_btag_eff_c_fastsim_temp    -> Clone("h_btag_eff_c_fastsim");
-        h_btag_eff_udsg_fastsim = (TH2D*) h_btag_eff_udsg_fastsim_temp -> Clone("h_btag_eff_udsg_fastsim");
-        std::cout << "loaded fullsim and fastsim btag SFs" << std::endl;
-    }
-    else
-    {
-        std::cout << "loaded fullsim btag SFs" << std::endl;
+        if (isdeepcsv)
+        {
+            // Not implemented
+            std::cout << "Year 2016 DeepCSV based b-tagger not implemented yet" << std::endl;
+            abort();
+        }
+        else
+        {
+            // setup btag calibration readers
+            calib           = new BTagCalibration("csvv2", "coreutil/data/btagsf/CSVv2_Moriond17_B_H.csv"); // Moriond17 version of SFs
+            reader_fullsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central",{"up","down"});
+            reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_B, "comb");
+            reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_C, "comb");
+            reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_UDSG, "incl");
+            // get btag efficiencies
+            TFile * f_btag_eff           = new TFile("coreutil/data/btagsf/btageff__ttbar_powheg_pythia8_25ns_Moriond17.root");
+            TH2D  * h_btag_eff_b_temp    = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_b");
+            TH2D  * h_btag_eff_c_temp    = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_c");
+            TH2D  * h_btag_eff_udsg_temp = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
+            h_btag_eff_b    = (TH2D*) h_btag_eff_b_temp    -> Clone("h_btag_eff_b");
+            h_btag_eff_c    = (TH2D*) h_btag_eff_c_temp    -> Clone("h_btag_eff_c");
+            h_btag_eff_udsg = (TH2D*) h_btag_eff_udsg_temp -> Clone("h_btag_eff_udsg");
+            // extra copy for fastsim -> fullsim SFs
+            if (isfastsim)
+            {
+                // setup btag calibration readers
+                calib_fastsim     = new BTagCalibration("CSV", "coreutil/data/btagsf/fastsim_csvv2_ttbar_26_1_2017.csv"); // Moriond 17 25ns fastsim version of SFs
+                reader_fastsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central",{"up","down"});
+                reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_UDSG, "fastsim");
+                reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_B, "fastsim");
+                reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_C, "fastsim");
+                // get btag efficiencies
+                TFile * f_btag_eff_fastsim           = new TFile("coreutil/data/btagsf/btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root");
+                TH2D  * h_btag_eff_b_fastsim_temp    = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_b");
+                TH2D  * h_btag_eff_c_fastsim_temp    = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_c");
+                TH2D  * h_btag_eff_udsg_fastsim_temp = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
+                h_btag_eff_b_fastsim    = (TH2D*) h_btag_eff_b_fastsim_temp    -> Clone("h_btag_eff_b_fastsim");
+                h_btag_eff_c_fastsim    = (TH2D*) h_btag_eff_c_fastsim_temp    -> Clone("h_btag_eff_c_fastsim");
+                h_btag_eff_udsg_fastsim = (TH2D*) h_btag_eff_udsg_fastsim_temp -> Clone("h_btag_eff_udsg_fastsim");
+                std::cout << "loaded fullsim and fastsim btag SFs" << std::endl;
+            }
+            else
+            {
+                std::cout << "loaded fullsim btag SFs" << std::endl;
+            }
+        }
     }
 }
 
@@ -57,6 +71,25 @@ void CoreUtil::btag::clearSF()
 //########################################################################################
 void CoreUtil::btag::accumulateSF(int iJet, float pt, float eta)
 {
+    if (year == 2016)
+    {
+        if (isdeepcsv)
+        {
+            // Not implemented
+            std::cout << "Year 2016 DeepCSV based b-tagger not implemented yet" << std::endl;
+            abort();
+        }
+        else
+        {
+            accumulateSF2016CSVv2(iJet, pt, eta);
+        }
+    }
+}
+
+//########################################################################################
+void CoreUtil::btag::accumulateSF2016CSVv2(int iJet, float pt, float eta)
+{
+
     float current_csv_val = cms3.getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags", iJet);
     bool isData = cms3.evt_isRealData();
 
