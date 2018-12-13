@@ -8,7 +8,9 @@ CoreUtil::sample::CMS4Type CoreUtil::sample::CMS4Version(TString fname)
     if (fname.Contains("CMS4_V00-00-02_AllPF"     )) return k2016MC;
     if (fname.Contains("CMS4_V09-04-12"           )) return k2017Data;
     if (fname.Contains("CMS4_V09-04-13"           )) return k2017MC;
+    if (fname.Contains("CMS4_V09-04-19"           )) return k2017MC;
     if (fname.Contains("CMS4_V09-04-17"           )) return k2017MC;
+    if (fname.Contains("CMS4_V00-00-02"           )) return k2016MC;
 
     std::cout << TString::Format("[CoreUtil::sample] Can't parse which CMS4 version it is from sample = %s", fname.Data()) << std::endl;
     abort();
@@ -117,12 +119,35 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("GluGluHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_RunIISummer16MiniAODv2"                                                                                    )) return "ggh_hwwlvjj";
     if (fname.Contains("GluGluHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_cms4"                                                                                                      )) return "ggh_hwwlvjj";
 
+    if (fname.Contains("WZTo3LNu_0Jets_MLL-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))      return "wz_3lnu0jetmll50_madgraph";
+    if (fname.Contains("WZTo3LNu_1Jets_MLL-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))      return "wz_3lnu1jetmll50_madgraph";
+    if (fname.Contains("WZTo3LNu_2Jets_MLL-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))      return "wz_3lnu2jetmll50_madgraph";
+    if (fname.Contains("WZTo3LNu_3Jets_MLL-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))      return "wz_3lnu3jetmll50_madgraph";
+    if (fname.Contains("WZTo3LNu_0Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2_MINIAODSIM"))   return "wz_3lnu0jetmll4_madgraph";
+    if (fname.Contains("WZTo3LNu_1Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2_MINIAODSIM"))   return "wz_3lnu1jetmll4_madgraph";
+    if (fname.Contains("WZTo3LNu_2Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2_MINIAODSIM"))   return "wz_3lnu2jetmll4_madgraph";
+    if (fname.Contains("WZTo3LNu_3Jets_MLL-4To50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_MINIAODSIM"))   return "wz_3lnu3jetmll4_madgraph";
+
+    if (fname.Contains("WZTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8_" )) return "wz_lnqq_amcnlo";
+    if (fname.Contains("WZTo1L3Nu_13TeV_amcatnloFXFX_madspin_pythia8_" )) return "wz_1l3n_amcnlo";
+
+    if (fname.Contains("WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8_"))                return "wz_2l2q_amcatnlo" ;
+    if (fname.Contains("WZTo3LNu_0Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8_")) return "wz_3lv_0jmll4_madgraph" ;
+    if (fname.Contains("WZTo3LNu_0Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8_"))    return "wz_3lv_0jmll50_madgraph" ;
+    if (fname.Contains("WZTo3LNu_1Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8_")) return "wz_3lv_1jmll4_madgraph" ;
+    if (fname.Contains("WZTo3LNu_1Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8_"))    return "wz_3lv_1jmll50_madgraph" ;
+    if (fname.Contains("WZTo3LNu_2Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8_")) return "wz_3lv_2jmll4_madgraph" ;
+    if (fname.Contains("WZTo3LNu_2Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8_"))    return "wz_3lv_2jmll50_madgraph" ;
+    if (fname.Contains("WZTo3LNu_3Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8_")) return "wz_3lv_3jmll4_madgraph" ;
+    if (fname.Contains("WZTo3LNu_3Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8_"))    return "wz_3lv_3jmll50_madgraph" ;
+    if (fname.Contains("WZTo3LNu_13TeV-powheg-pythia8_"))                              return "wz_3lv_powheg";
 
     // Signal sample 2016
     if (fname.Contains("TEST-www_www-Private80X-v1"                                                                                                                                                                                    )) return "www_2l_mia_cms3";
     if (fname.Contains("TEST-www_wwwext-Private80X-v1"                                                                                                                                                                                 )) return "www_2l_ext1_mia_cms3";
     if (fname.Contains("PrivateWWW_www-cms4"                                                                                                                                                                                           )) return "www_2l_"; // the mia or ext1_mia is not needed. If you add this it actually screws it up
     if (fname.Contains("PrivateWWW_wwwext-cms4"                                                                                                                                                                                        )) return "www_2l_"; // the mia or ext1_mia is not needed. If you add this it actually screws it up
+    if (fname.Contains("WWW_BW"                                                                                                                                                                                                        )) return "www_bw_";
 
     // BSM models 2016
     if (fname.Contains("DoublyChargedHiggsGMmodel_HWW"                                                                                                                                                                                 )) return "hpmpm_hww";
@@ -187,6 +212,7 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt120";
     if (fname.Contains("QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt170";
     if (fname.Contains("QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt300";
+    if (fname.Contains("QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt470";
     if (fname.Contains("QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM" )) return "qcd_mu_pt600";
     if (fname.Contains("QCD_Pt-15to20_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM"      )) return "qcd_em_pt15";
     if (fname.Contains("QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV_pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM"      )) return "qcd_em_pt20";
@@ -262,7 +288,64 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("JetHT_Run2017E-31Mar2018-v1_MINIAOD"  )) return "data_jet_Run2017E";
     if (fname.Contains("JetHT_Run2017F-31Mar2018-v1_MINIAOD"  )) return "data_jet_Run2017F";
 
-//    std::cout << TString::Format("[CoreUtil::sample] Unrecognized sample = %s", fname.Data()) << std::endl;
+    if (fname.Contains("WWW_4F_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                          )) return "www_amcatnlo";
+    if (fname.Contains("VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2_MINIAODSIM_"                              )) return "vh_nonbb_amcatnlo";
+    if (fname.Contains("DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v2_MINIAODSIM_"                                             )) return "dy_m10_madpgrah";
+    if (fname.Contains("DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1_MINIAODSIM_"                        )) return "dy_m50_amcatnlo";
+    if (fname.Contains("WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v2_MINIAODSIM_"                              )) return "wjets_incl_madgraph";
+    if (fname.Contains("WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2_MINIAODSIM_"                       )) return "wjets_ht100_madgraph";
+    if (fname.Contains("WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                       )) return "wjets_ht200_madgraph";
+    if (fname.Contains("WJetsToLNu_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                       )) return "wjets_ht400_madgraph";
+    if (fname.Contains("WJetsToLNu_HT-600To800_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                       )) return "wjets_ht600_madgraph";
+    if (fname.Contains("WJetsToLNu_HT-800To1200_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                      )) return "wjets_ht800_madgraph";
+    if (fname.Contains("WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                     )) return "wjets_ht1200_madgraph";
+    if (fname.Contains("WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3_MINIAODSIM_"                      )) return "wjets_ht2500_madgraph";
+    if (fname.Contains("ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                    )) return "singletop_schanlep_amcatnlo";
+    if (fname.Contains("ST_t-channel_antitop_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_" )) return "singletop_antitop_powheg";
+    if (fname.Contains("ST_t-channel_top_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"     )) return "singletop_top_powheg";
+    if (fname.Contains("ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"            )) return "tw_antitopnofullhad_powheg";
+    if (fname.Contains("ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                )) return "tw_topnofullhad_powheg";
+    if (fname.Contains("GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1_MINIAODSIM_"                    )) return "ggh_hzz4l_powheg";
+    if (fname.Contains("WpWpJJ_EWK-QCD_TuneCP5_13TeV-madgraph-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                  )) return "vbsww_madgraph";
+    if (fname.Contains("WW_DoubleScattering_13TeV-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                      )) return "ww_dblsct_pythia";
+    if (fname.Contains("WW_TuneCP5_13TeV-pythia8_RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1_MINIAODSIM_"                                                                          )) return "ww_pythia";
+    if (fname.Contains("WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                    )) return "wz_3lv_amcatnlo";
+    if (fname.Contains("WZ_TuneCP5_13TeV-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                                       )) return "wz_incl_amcatnlo";
+    if (fname.Contains("ZZTo4L_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                                    )) return "zz_4l_powheg";
+    if (fname.Contains("WWZ_4F_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                          )) return "wwz_amcatnlo";
+    if (fname.Contains("WZZ_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                             )) return "wzz_amcatnlo";
+    if (fname.Contains("WZG_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                             )) return "wzg_amcatnlo";
+    if (fname.Contains("ZZZ_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                             )) return "zzz_amcatnlo";
+    if (fname.Contains("TTJets_SingleLeptFromT_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                       )) return "ttbar_1ltop_madgraph";
+    if (fname.Contains("TTJets_SingleLeptFromTbar_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                    )) return "ttbar_1ltbr_madgraph";
+    if (fname.Contains("TTJets_DiLept_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                )) return "ttbar_2l_madgraph";
+    if (fname.Contains("TTGamma_SingleLeptFromT_TuneCP5_PSweights_13TeV_madgraph_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"               )) return "ttg_1ltop_madgraph";
+    if (fname.Contains("TTGamma_SingleLeptFromTbar_TuneCP5_PSweights_13TeV_madgraph_pythia8_RunIIFall17MiniAOD-PU2017_94X_mc2017_realistic_v11-v1_MINIAODSIM_"                        )) return "ttg_1ltbr_madgraph";
+    if (fname.Contains("TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                        )) return "ttw_lv_amcatnlo";
+    if (fname.Contains("TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                         )) return "ttw_qq_amcatnlo";
+    if (fname.Contains("TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                 )) return "ttz_llm1to10_amcatnlo";
+    if (fname.Contains("TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                )) return "ttz_llvvm10_amcatnlo";
+    if (fname.Contains("TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                                         )) return "ttz_qq_amcatnlo";
+    if (fname.Contains("tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_"                     )) return "tzq_ll_amcatnlo";
+    if (fname.Contains("DoubleEG_Run2017B-31Mar2018-v1_MINIAOD_"                                                                                                                      )) return "data_Run2017B_ee";
+    if (fname.Contains("DoubleEG_Run2017C-31Mar2018-v1_MINIAOD_"                                                                                                                      )) return "data_Run2017C_ee";
+    if (fname.Contains("DoubleEG_Run2017D-31Mar2018-v1_MINIAOD_"                                                                                                                      )) return "data_Run2017D_ee";
+    if (fname.Contains("DoubleEG_Run2017E-31Mar2018-v1_MINIAOD_"                                                                                                                      )) return "data_Run2017E_ee";
+    if (fname.Contains("DoubleEG_Run2017F-31Mar2018-v1_MINIAOD_"                                                                                                                      )) return "data_Run2017F_ee";
+    if (fname.Contains("DoubleMuon_Run2017B-31Mar2018-v1_MINIAOD_"                                                                                                                    )) return "data_Run2017B_mm";
+    if (fname.Contains("DoubleMuon_Run2017C-31Mar2018-v1_MINIAOD_"                                                                                                                    )) return "data_Run2017C_mm";
+    if (fname.Contains("DoubleMuon_Run2017D-31Mar2018-v1_MINIAOD_"                                                                                                                    )) return "data_Run2017D_mm";
+    if (fname.Contains("DoubleMuon_Run2017E-31Mar2018-v1_MINIAOD_"                                                                                                                    )) return "data_Run2017E_mm";
+    if (fname.Contains("DoubleMuon_Run2017F-31Mar2018-v1_MINIAOD_"                                                                                                                    )) return "data_Run2017F_mm";
+    if (fname.Contains("MuonEG_Run2017B-31Mar2018-v1_MINIAOD_"                                                                                                                        )) return "data_Run2017B_em";
+    if (fname.Contains("MuonEG_Run2017C-31Mar2018-v1_MINIAOD_"                                                                                                                        )) return "data_Run2017C_em";
+    if (fname.Contains("MuonEG_Run2017D-31Mar2018-v1_MINIAOD_"                                                                                                                        )) return "data_Run2017D_em";
+    if (fname.Contains("MuonEG_Run2017E-31Mar2018-v1_MINIAOD_"                                                                                                                        )) return "data_Run2017E_em";
+    if (fname.Contains("MuonEG_Run2017F-31Mar2018-v1_MINIAOD_"                                                                                                                        )) return "data_Run2017F_em";
+
+    std::cout << TString::Format("[CoreUtil::sample] Unrecognized sample = %s", fname.Data()) << std::endl;
+    abort();
+
     return "unknown";
     //abort();
 
