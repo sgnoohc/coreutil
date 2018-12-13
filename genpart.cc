@@ -146,6 +146,9 @@ std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHWWlvjj()
 //        std::cout <<  " ichild: " << ichild <<  std::endl;
 //        std::cout <<  " jchild: " << jchild <<  std::endl;
 //        std::cout << " searching grand daughters " << std::endl;
+
+        bool wlep_found = false;
+        bool whad_found = false;
         for (unsigned int id = 0; id < higgses[ih].HiggsDaughters.size(); ++id)
         {
 //            std::cout <<  " id: " << id <<  std::endl;
@@ -155,15 +158,26 @@ std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHWWlvjj()
 //            std::cout <<  " cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass(): " << cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass() <<  std::endl;
             int igrandchild = -1;
             int jgrandchild = -1;
-            if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairLeptonicWDecay))
+            if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairLeptonicWDecay) && !wlep_found)
             //if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, -999, isPairLeptonicWDecay))
             {
+//                std::cout <<  " 'wlep_found': " << "wlep_found" <<  std::endl;
+//                printParticle(igrandchild);
+//                printParticle(jgrandchild);
+//                std::cout <<  " wlep_found: " << wlep_found <<  std::endl;
                 higgses[ih].addHiggsGrandDaughters(igrandchild, jgrandchild, id);
+                wlep_found = true;
             }
-            else if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairHadronicWDecay))
+            else if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairHadronicWDecay) && !whad_found)
             //else if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, -999, isPairHadronicWDecay))
             {
+//                std::cout <<  " 'whad_found': " << "whad_found" <<  std::endl;
+//                printParticle(higgses[ih].HiggsDaughters[id].idx);
+//                printParticle(igrandchild);
+//                printParticle(jgrandchild);
+//                std::cout <<  " whad_found: " << whad_found <<  std::endl;
                 higgses[ih].addHiggsGrandDaughters(igrandchild, jgrandchild, id);
+                whad_found = true;
             }
             else
             {
@@ -219,6 +233,10 @@ std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHbb()
 bool CoreUtil::genpart::matchDecay(int iparent, int& ichild, int& jchild, int pid, std::function<bool(int, int)> ispairmatch)
 {
     LorentzVector parent_p4 = cms3.genps_p4()[iparent];
+    int parent_id = cms3.genps_id()[iparent];
+
+    ichild = -1;
+    jchild = -1;
 
     // Get particles with either mother or grandmother being 25 with status 22 and try to match
 
@@ -266,6 +284,10 @@ bool CoreUtil::genpart::matchDecay(int iparent, int& ichild, int& jchild, int pi
             if (abs(j_motherid) > 25 || abs(motherid) > 25)
                 continue;
 
+            //// check mother to be same as parent_id
+            //if (abs(j_motherid) != parent_id && abs(motherid) != parent_id)
+            //    continue;
+
             // Set the j-th particle 4 vector
             LorentzVector jp4 = cms3.genps_p4()[jdx];
 
@@ -273,7 +295,9 @@ bool CoreUtil::genpart::matchDecay(int iparent, int& ichild, int& jchild, int pi
 //            printLorentzVector(jp4);
 //            printLorentzVector(parent_p4);
 //            std::cout <<  " fabs((ip4+jp4).mass()): " << fabs((ip4+jp4).mass()) <<  " parent_p4.mass(): " << parent_p4.mass() <<  std::endl;
-            if (fabs((ip4 + jp4).mass() - parent_p4.mass()) < 5)
+//            std::cout <<  " fabs((ip4+jp4).energy()): " << fabs((ip4+jp4).energy()) <<  " parent_p4.energy(): " << parent_p4.energy() <<  std::endl;
+            //if ((fabs((ip4 + jp4).mass() - parent_p4.mass()) < 10) || ((fabs((ip4 + jp4).energy() - parent_p4.energy()) < 12) && (fabs((ip4 + jp4).mass() - parent_p4.mass()) < 30)))
+            if ((fabs((ip4 + jp4).mass() - parent_p4.mass()) < 10))
             {
 
                 if (ichild == -1 && jchild == -1)

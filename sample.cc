@@ -114,6 +114,8 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("HWminusJ_HToWW_M125_13TeV_powheg_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                            )) return "hwmj_hww";
     if (fname.Contains("HZJ_HToWW_M125_13TeV_powheg_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                                 )) return "hzj_hww";
     if (fname.Contains("VBFHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1"                                )) return "vbf_hwwlvjj";
+    if (fname.Contains("GluGluHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_RunIISummer16MiniAODv2"                                                                                    )) return "ggh_hwwlvjj";
+    if (fname.Contains("GluGluHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8_cms4"                                                                                                      )) return "ggh_hwwlvjj";
 
 
     // Signal sample 2016
