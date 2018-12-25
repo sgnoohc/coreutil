@@ -115,8 +115,7 @@ void CoreUtil::genpart::calcGenHT(int iGen)
 }
 
 //##########################################################################################
-// Currently only support "HWWlvjj"
-std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHWWlvjj()
+std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHWW(bool verbose)
 {
     // Return object
     std::vector<Higgs> higgses;
@@ -144,39 +143,139 @@ std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHWWlvjj()
         int jchild = -1;
         if (matchDecay(higgses[ih].idx, ichild, jchild, 25, isPairHWWDecay))
             higgses[ih].addHiggsDaughters(ichild, jchild);
-//        std::cout <<  " ichild: " << ichild <<  std::endl;
-//        std::cout <<  " jchild: " << jchild <<  std::endl;
-//        std::cout << " searching grand daughters " << std::endl;
+        if (verbose)
+        {
+            std::cout <<  " ichild: " << ichild <<  std::endl;
+            std::cout <<  " jchild: " << jchild <<  std::endl;
+            std::cout << " searching grand daughters " << std::endl;
+        }
+
+        for (unsigned int id = 0; id < higgses[ih].HiggsDaughters.size(); ++id)
+        {
+            if (verbose)
+            {
+                std::cout <<  " id: " << id <<  std::endl;
+                std::cout <<  " higgses[ih].HiggsDaughters[id].p4.mass(): " << higgses[ih].HiggsDaughters[id].p4.mass() <<  std::endl;
+                std::cout <<  " higgses[ih].HiggsDaughters[id].id: " << higgses[ih].HiggsDaughters[id].id <<  std::endl;
+                std::cout <<  " higgses[ih].HiggsDaughters[id].idx: " << higgses[ih].HiggsDaughters[id].idx <<  std::endl;
+                std::cout <<  " cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass(): " << cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass() <<  std::endl;
+            }
+            int igrandchild = -1;
+            int jgrandchild = -1;
+            if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairLeptonicWDecay))
+            {
+                if (verbose)
+                {
+                    std::cout <<  " 'wlep_found': " << "wlep_found" <<  std::endl;
+                    printParticle(igrandchild);
+                    printParticle(jgrandchild);
+                }
+                higgses[ih].addHiggsGrandDaughters(igrandchild, jgrandchild, id);
+            }
+            else if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairHadronicWDecay))
+            {
+                if (verbose)
+                {
+                    std::cout <<  " 'whad_found': " << "whad_found" <<  std::endl;
+                    printParticle(higgses[ih].HiggsDaughters[id].idx);
+                    printParticle(igrandchild);
+                    printParticle(jgrandchild);
+                }
+                higgses[ih].addHiggsGrandDaughters(igrandchild, jgrandchild, id);
+            }
+            else
+            {
+                std::cout <<  " higgses[ih].HiggsDaughters[id].idx: " << higgses[ih].HiggsDaughters[id].idx <<  std::endl;
+                std::cout <<  " higgses[ih].HiggsDaughters[id].id: " << higgses[ih].HiggsDaughters[id].id <<  std::endl;
+                higgses[ih].HiggsDaughters[id].print();
+                std::cout << "did not find any" << std::endl;
+                printAllParticles();
+                matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairLeptonicWDecay, true);
+                matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairHadronicWDecay, true);
+                exit(-1);
+            }
+
+        }
+    }
+
+    return higgses;
+}
+
+//##########################################################################################
+// Currently only support "HWWlvjj"
+std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHWWlvjj(bool verbose)
+{
+    // Return object
+    std::vector<Higgs> higgses;
+
+    // Get all Higgs and create Higgs object
+    // For Higgs get the status 62
+    for (unsigned int idx = 0; idx < cms3.genps_p4().size(); idx++)
+    {
+//        printParticle(idx);
+        if (abs(cms3.genps_id()[idx]) == 25 && cms3.genps_status()[idx] == 62)
+        {
+            Higgs higgs;
+            higgs.p4 = cms3.genps_p4()[idx];
+            higgs.id = 25;
+            higgs.isstar = false;
+            higgs.islead = false;
+            higgs.idx = idx;
+            higgses.push_back(higgs);
+        }
+    }
+
+    for (unsigned int ih = 0; ih < higgses.size(); ih++)
+    {
+        int ichild = -1;
+        int jchild = -1;
+        if (matchDecay(higgses[ih].idx, ichild, jchild, 25, isPairHWWDecay))
+            higgses[ih].addHiggsDaughters(ichild, jchild);
+        if (verbose)
+        {
+            std::cout <<  " ichild: " << ichild <<  std::endl;
+            std::cout <<  " jchild: " << jchild <<  std::endl;
+            std::cout << " searching grand daughters " << std::endl;
+        }
 
         bool wlep_found = false;
         bool whad_found = false;
         for (unsigned int id = 0; id < higgses[ih].HiggsDaughters.size(); ++id)
         {
-//            std::cout <<  " id: " << id <<  std::endl;
-//            std::cout <<  " higgses[ih].HiggsDaughters[id].p4.mass(): " << higgses[ih].HiggsDaughters[id].p4.mass() <<  std::endl;
-//            std::cout <<  " higgses[ih].HiggsDaughters[id].id: " << higgses[ih].HiggsDaughters[id].id <<  std::endl;
-//            std::cout <<  " higgses[ih].HiggsDaughters[id].idx: " << higgses[ih].HiggsDaughters[id].idx <<  std::endl;
-//            std::cout <<  " cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass(): " << cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass() <<  std::endl;
+            if (verbose)
+            {
+                std::cout <<  " id: " << id <<  std::endl;
+                std::cout <<  " higgses[ih].HiggsDaughters[id].p4.mass(): " << higgses[ih].HiggsDaughters[id].p4.mass() <<  std::endl;
+                std::cout <<  " higgses[ih].HiggsDaughters[id].id: " << higgses[ih].HiggsDaughters[id].id <<  std::endl;
+                std::cout <<  " higgses[ih].HiggsDaughters[id].idx: " << higgses[ih].HiggsDaughters[id].idx <<  std::endl;
+                std::cout <<  " cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass(): " << cms3.genps_p4()[higgses[ih].HiggsDaughters[id].idx].mass() <<  std::endl;
+            }
             int igrandchild = -1;
             int jgrandchild = -1;
             if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairLeptonicWDecay) && !wlep_found)
             //if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, -999, isPairLeptonicWDecay))
             {
-//                std::cout <<  " 'wlep_found': " << "wlep_found" <<  std::endl;
-//                printParticle(igrandchild);
-//                printParticle(jgrandchild);
-//                std::cout <<  " wlep_found: " << wlep_found <<  std::endl;
+                if (verbose)
+                {
+                    std::cout <<  " 'wlep_found': " << "wlep_found" <<  std::endl;
+                    printParticle(igrandchild);
+                    printParticle(jgrandchild);
+                    std::cout <<  " wlep_found: " << wlep_found <<  std::endl;
+                }
                 higgses[ih].addHiggsGrandDaughters(igrandchild, jgrandchild, id);
                 wlep_found = true;
             }
             else if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairHadronicWDecay) && !whad_found)
             //else if (matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, -999, isPairHadronicWDecay))
             {
-//                std::cout <<  " 'whad_found': " << "whad_found" <<  std::endl;
-//                printParticle(higgses[ih].HiggsDaughters[id].idx);
-//                printParticle(igrandchild);
-//                printParticle(jgrandchild);
-//                std::cout <<  " whad_found: " << whad_found <<  std::endl;
+                if (verbose)
+                {
+                    std::cout <<  " 'whad_found': " << "whad_found" <<  std::endl;
+                    printParticle(higgses[ih].HiggsDaughters[id].idx);
+                    printParticle(igrandchild);
+                    printParticle(jgrandchild);
+                    std::cout <<  " whad_found: " << whad_found <<  std::endl;
+                }
                 higgses[ih].addHiggsGrandDaughters(igrandchild, jgrandchild, id);
                 whad_found = true;
             }
@@ -187,6 +286,8 @@ std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHWWlvjj()
                 higgses[ih].HiggsDaughters[id].print();
                 std::cout << "did not find any" << std::endl;
                 printAllParticles();
+                matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairLeptonicWDecay, true);
+                matchDecay(higgses[ih].HiggsDaughters[id].idx, igrandchild, jgrandchild, higgses[ih].HiggsDaughters[id].id, isPairHadronicWDecay, true);
                 exit(-1);
             }
 
@@ -231,7 +332,7 @@ std::vector<CoreUtil::genpart::Higgs> CoreUtil::genpart::reconstructHbb()
 }
 
 //##########################################################################################
-bool CoreUtil::genpart::matchDecay(int iparent, int& ichild, int& jchild, int pid, std::function<bool(int, int)> ispairmatch)
+bool CoreUtil::genpart::matchDecay(int iparent, int& ichild, int& jchild, int pid, std::function<bool(int, int)> ispairmatch, bool verbose)
 {
     LorentzVector parent_p4 = cms3.genps_p4()[iparent];
     int parent_id = cms3.genps_id()[iparent];
@@ -251,6 +352,14 @@ bool CoreUtil::genpart::matchDecay(int iparent, int& ichild, int& jchild, int pi
         int id        = cms3.genps_id()[idx];
         int status    = cms3.genps_status()[idx];
 
+//        if (verbose)
+//        {
+//            std::cout <<  " idx: " << idx <<  std::endl;
+//            std::cout <<  " pid: " << pid <<  std::endl;
+//            std::cout <<  " motherid: " << motherid <<  std::endl;
+//            std::cout <<  " grandmaid: " << grandmaid <<  std::endl;
+//        }
+
         // Check the iparticle is from whatever the parent i am looking for (if pid == -999, don't do anything)
         if (pid != -999 && (motherid != pid && grandmaid != pid))
             continue;
@@ -267,6 +376,16 @@ bool CoreUtil::genpart::matchDecay(int iparent, int& ichild, int& jchild, int pi
             int j_grandmaid = cms3.genps_id_simplegrandma()[jdx];
             int j_id = cms3.genps_id()[jdx];
             int j_status = cms3.genps_status()[jdx];
+
+//            if (verbose)
+//            {
+//                std::cout <<  " jdx: " << jdx <<  std::endl;
+//                std::cout <<  " pid: " << pid <<  std::endl;
+//                std::cout <<  " j_motherid: " << j_motherid <<  std::endl;
+//                std::cout <<  " j_grandmaid: " << j_grandmaid <<  std::endl;
+//                std::cout <<  " j_id: " << j_id <<  std::endl;
+//                std::cout <<  " id: " << id <<  std::endl;
+//            }
 
             // Check the iparticle is from whatever the parent i am looking for (if pid == -999, don't do anything)
             if (pid != -999 && (j_motherid != pid && j_grandmaid != pid))
@@ -292,12 +411,14 @@ bool CoreUtil::genpart::matchDecay(int iparent, int& ichild, int& jchild, int pi
             // Set the j-th particle 4 vector
             LorentzVector jp4 = cms3.genps_p4()[jdx];
 
-//            printLorentzVector(ip4);
-//            printLorentzVector(jp4);
-//            printLorentzVector(parent_p4);
-//            std::cout <<  " fabs((ip4+jp4).mass()): " << fabs((ip4+jp4).mass()) <<  " parent_p4.mass(): " << parent_p4.mass() <<  std::endl;
-//            std::cout <<  " fabs((ip4+jp4).energy()): " << fabs((ip4+jp4).energy()) <<  " parent_p4.energy(): " << parent_p4.energy() <<  std::endl;
-            //if ((fabs((ip4 + jp4).mass() - parent_p4.mass()) < 10) || ((fabs((ip4 + jp4).energy() - parent_p4.energy()) < 12) && (fabs((ip4 + jp4).mass() - parent_p4.mass()) < 30)))
+            if (verbose)
+            {
+                printLorentzVector(ip4);
+                printLorentzVector(jp4);
+                printLorentzVector(parent_p4);
+                std::cout <<  " fabs((ip4+jp4).mass()): " << fabs((ip4+jp4).mass()) <<  " parent_p4.mass(): " << parent_p4.mass() <<  std::endl;
+                std::cout <<  " fabs((ip4+jp4).energy()): " << fabs((ip4+jp4).energy()) <<  " parent_p4.energy(): " << parent_p4.energy() <<  std::endl;
+            }
             if ((fabs((ip4 + jp4).mass() - parent_p4.mass()) < 10))
             {
 
@@ -349,6 +470,31 @@ bool CoreUtil::genpart::isPairHadronicWDecay(int id, int jd)
     pairs.push_back(make_pair(4, -5));
     pairs.push_back(make_pair(5, -2));
     pairs.push_back(make_pair(5, -4));
+    return isPairPdgIDMatch(id, jd, pairs);
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::isPairLeptonicZDecay(int id, int jd)
+{
+    std::vector<std::pair<int, int>> pairs;
+    pairs.push_back(make_pair(11, -11));
+    pairs.push_back(make_pair(13, -13));
+    pairs.push_back(make_pair(15, -15));
+    pairs.push_back(make_pair(-12, 12));
+    pairs.push_back(make_pair(-14, 14));
+    pairs.push_back(make_pair(-16, 16));
+    return isPairPdgIDMatch(id, jd, pairs);
+}
+
+//##########################################################################################
+bool CoreUtil::genpart::isPairHadronicZDecay(int id, int jd)
+{
+    std::vector<std::pair<int, int>> pairs;
+    pairs.push_back(make_pair(1, -1));
+    pairs.push_back(make_pair(2, -2));
+    pairs.push_back(make_pair(2, -3));
+    pairs.push_back(make_pair(4, -4));
+    pairs.push_back(make_pair(5, -5));
     return isPairPdgIDMatch(id, jd, pairs);
 }
 
