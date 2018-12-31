@@ -343,6 +343,8 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("MuonEG_Run2017E-31Mar2018-v1_MINIAOD_"                                                                                                                        )) return "data_Run2017E_em";
     if (fname.Contains("MuonEG_Run2017F-31Mar2018-v1_MINIAOD_"                                                                                                                        )) return "data_Run2017F_em";
 
+    if (fname.Contains("VHToWW_M125_13TeV_amcatnloFXFX_madspin_pythia8"                                                                                                               )) return "vh_ww_amcatnlo";
+
     std::cout << TString::Format("[CoreUtil::sample] Unrecognized sample = %s", fname.Data()) << std::endl;
     abort();
 
