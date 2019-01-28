@@ -3,9 +3,24 @@
 //########################################################################################
 void CoreUtil::jet::process(jec& jec_)
 {
+    process(jec_, nullptr);
+}
+
+//########################################################################################
+void CoreUtil::jet::process(jec& jec_, jer& jer_)
+{
+    process(jec_, &jer_);
+}
+
+//########################################################################################
+void CoreUtil::jet::process(jec& jec_, jer* jer_)
+{
     index.clear();
     corrs.clear();
     shifts.clear();
+    smears.clear();
+    smears_up.clear();
+    smears_dn.clear();
 
     for (unsigned int iJet = 0; iJet < cms3.pfjets_p4().size(); iJet++)
     {
@@ -15,6 +30,10 @@ void CoreUtil::jet::process(jec& jec_)
 
         // get uncorrected jet p4 to use as input for corrections
         LorentzVector pfjet_p4_uncor = cms3.pfjets_p4()[iJet] * cms3.pfjets_undoJEC()[iJet];
+
+        //=====================
+        // JEC
+        //=====================
 
         // Configure the JEC based on pt/eta/pileup
         jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run())->setRho(cms3.evt_fixgridfastjet_all_rho());
@@ -46,5 +65,25 @@ void CoreUtil::jet::process(jec& jec_)
         index.push_back(iJet);
         corrs.push_back(corr);
         shifts.push_back(shift);
+
+        //=====================
+        // JER
+        //=====================
+        if (jer_)
+        {
+            jer_->loadVariable("JetEta", cms3.pfjets_p4().at(ijet).eta());
+            jer_->loadVariable("Rho", cms3.evt_fixgridfastjet_all_rho());
+            jer_->loadVariable("JetPt", cms3.pfjets_p4().at(ijet).pt()); // should be the corrected energy. Not taken into account here.
+
+            auto smearing = jer_->smear(cms3.pfjets_p4().at(ijet), cms3.genjets_p4NoMuNoNu(), GenJetPt, 0);
+            auto smearing_up = jer_->smear(cms3.pfjets_p4().at(ijet), cms3.genjets_p4NoMuNoNu(), GenJetPt, 1);
+            auto smearing_dn = jer_->smear(cms3.pfjets_p4().at(ijet), cms3.genjets_p4NoMuNoNu(), GenJetPt,-1);
+            auto matching = jer_->match();
+
+            // The returned smearing is a vector since if matched it has 2 elements
+            smears.push_back(smearing[0]);
+            smears_up.push_back(smearing_up[0]);
+            smears_dn.push_back(smearing_dn[0]);
+        }
     }
 }
