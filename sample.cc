@@ -5,6 +5,7 @@ CoreUtil::sample::CMS4Type CoreUtil::sample::CMS4Version(TString fname)
 {
     if (fname.Contains("CMS4_V00-00-02_data2016"  )) return k2016Data;
     if (fname.Contains("CMS4_V00-00-02_2017Sep27" )) return k2016MC;
+    if (fname.Contains("CMS4_V00-00-03_2017Sep27" )) return k2016MC;
     if (fname.Contains("CMS4_V00-00-02_AllPF"     )) return k2016MC;
     if (fname.Contains("CMS4_V08-00-06_826p1"     )) return k2016MC;
     if (fname.Contains("CMS4_V09-04-17"           ) and fname.Contains("Run2016")) return k2016Data;
@@ -32,6 +33,7 @@ bool CoreUtil::sample::is2017MC  (TString fname) { return CMS4Version(fname) == 
 //_________________________________________________________________________________________________
 TString CoreUtil::sample::nicename(TString fname)
 {
+    if (fname.Contains("PrivateWWW")) return "www";
     if (fname.Contains("WWW_4F_")) return "www";
     if (fname.Contains("VHToNonbb")) return "vh";
     return "UNKNOWN";

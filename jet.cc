@@ -69,21 +69,33 @@ void CoreUtil::jet::process(jec& jec_, jer* jer_)
         //=====================
         // JER
         //=====================
-        if (jer_)
+        if (jer_ and not cms3.evt_isRealData())
         {
-            jer_->loadVariable("JetEta", cms3.pfjets_p4().at(ijet).eta());
-            jer_->loadVariable("Rho", cms3.evt_fixgridfastjet_all_rho());
-            jer_->loadVariable("JetPt", cms3.pfjets_p4().at(ijet).pt()); // should be the corrected energy. Not taken into account here.
 
-            auto smearing = jer_->smear(cms3.pfjets_p4().at(ijet), cms3.genjets_p4NoMuNoNu(), GenJetPt, 0);
-            auto smearing_up = jer_->smear(cms3.pfjets_p4().at(ijet), cms3.genjets_p4NoMuNoNu(), GenJetPt, 1);
-            auto smearing_dn = jer_->smear(cms3.pfjets_p4().at(ijet), cms3.genjets_p4NoMuNoNu(), GenJetPt,-1);
-            auto matching = jer_->match();
+            // Gen Jet Pt
+            vector<Double_t> GenJetPt;
+            for (auto& genjet : cms3.genjets_p4NoMuNoNu()) { GenJetPt.push_back(genjet.pt()); }
+
+            jer_->res.resetSeed(cms3.evt_event());
+            jer_->res.loadVariable("JetEta", cms3.pfjets_p4().at(iJet).eta());
+            jer_->res.loadVariable("Rho", cms3.evt_fixgridfastjet_all_rho());
+            jer_->res.loadVariable("JetPt", cms3.pfjets_p4().at(iJet).pt()); // should be the corrected energy. Not taken into account here.
+
+            auto smearing = jer_->res.smear(cms3.pfjets_p4().at(iJet), cms3.genjets_p4NoMuNoNu(), GenJetPt, 0);
+            auto smearing_up = jer_->res.smear(cms3.pfjets_p4().at(iJet), cms3.genjets_p4NoMuNoNu(), GenJetPt, 1);
+            auto smearing_dn = jer_->res.smear(cms3.pfjets_p4().at(iJet), cms3.genjets_p4NoMuNoNu(), GenJetPt,-1);
+            auto matching = jer_->res.match();
 
             // The returned smearing is a vector since if matched it has 2 elements
-            smears.push_back(smearing[0]);
-            smears_up.push_back(smearing_up[0]);
-            smears_dn.push_back(smearing_dn[0]);
+            smears.push_back(smearing[0] / cms3.pfjets_p4().at(iJet).pt());
+            smears_up.push_back(smearing_up[0] / cms3.pfjets_p4().at(iJet).pt());
+            smears_dn.push_back(smearing_dn[0] / cms3.pfjets_p4().at(iJet).pt());
+        }
+        else if (jer_ and cms3.evt_isRealData())
+        {
+            smears.push_back(1);
+            smears_up.push_back(1);
+            smears_dn.push_back(1);
         }
     }
 }

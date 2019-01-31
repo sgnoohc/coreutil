@@ -1,6 +1,18 @@
 #include "fatjet.h"
 
 //########################################################################################
+void CoreUtil::fatjet::process(jec& jec_)
+{
+    process(jec_, nullptr);
+}
+
+//########################################################################################
+void CoreUtil::fatjet::process(jec& jec_, jer& jer_)
+{
+    process(jec_, &jer_);
+}
+
+//########################################################################################
 void CoreUtil::fatjet::process(jec& jec_, jer* jer_)
 {
     index.clear();
@@ -58,18 +70,19 @@ void CoreUtil::fatjet::process(jec& jec_, jer* jer_)
         // JER
         //=====================
 
-        if (jer_)
+        if (jer_ and not cms3.evt_isRealData())
         {
-            jer_->loadVariable("JetEta", cms3.ak8jets_p4().at(ijet).eta());
-            jer_->loadVariable("Rho", cms3.evt_fixgridfastjet_all_rho());
-            jer_->loadVariable("JetPt", cms3.ak8jets_p4().at(ijet).pt()); // should be the corrected energy. Not taken into account here.
+            jer_->res.resetSeed(cms3.evt_event());
+            jer_->res.loadVariable("JetEta", cms3.ak8jets_p4().at(iJet).eta());
+            jer_->res.loadVariable("Rho", cms3.evt_fixgridfastjet_all_rho());
+            jer_->res.loadVariable("JetPt", cms3.ak8jets_p4().at(iJet).pt()); // should be the corrected energy. Not taken into account here.
 
             std::vector<LorentzVector> empty_genjets;
             std::vector<Double_t> empty_gen_parameters;
-            auto smearing = jer_->smear(cms3.ak8jets_p4().at(ijet), empty_genjets, empty_gen_parameters, 0);
-            auto smearing_up = jer_->smear(cms3.ak8jets_p4().at(ijet), empty_genjets, empty_gen_parameters, 1);
-            auto smearing_dn = jer_->smear(cms3.ak8jets_p4().at(ijet), empty_genjets, empty_gen_parameters,-1);
-            auto matching = jer_->match();
+            auto smearing = jer_->res.smear(cms3.ak8jets_p4().at(iJet), empty_genjets, empty_gen_parameters, 0);
+            auto smearing_up = jer_->res.smear(cms3.ak8jets_p4().at(iJet), empty_genjets, empty_gen_parameters, 1);
+            auto smearing_dn = jer_->res.smear(cms3.ak8jets_p4().at(iJet), empty_genjets, empty_gen_parameters,-1);
+            auto matching = jer_->res.match();
 
             // The returned smearing is a vector since if matched it has 2 elements
             smears.push_back(smearing[0]);

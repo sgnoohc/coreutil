@@ -18,6 +18,7 @@ namespace CoreUtil
 
             Int_t ngenPart;
             Int_t ngenLep;
+            Int_t ngenLepFromBoson;
             Int_t ngenLepFromTau;
             Int_t ngen_p6s3Part;
             std::vector<LorentzVector> genPart_p4 ;
