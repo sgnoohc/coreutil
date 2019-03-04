@@ -45,6 +45,7 @@ void CoreUtil::genpart::clear()
     ngenPart = 0;
     ngenLep = 0;
     ngenLepFromTau = 0;
+    ngenLepFromBoson = 0;
     ngen_p6s3Part = 0;
 
     gen_ht = 0;
@@ -94,6 +95,8 @@ void CoreUtil::genpart::addGenParticleToVectors(int iGen)
         //else if (motherId == 25 || motherId == 24 || motherId == 23)
         else
         {
+            if (motherId == 25 || motherId == 24 || motherId == 23)
+                ngenLepFromBoson++;
             ngenLep++;
         }
     } // status 1 e or mu
