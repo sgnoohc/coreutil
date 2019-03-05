@@ -31,6 +31,8 @@ namespace CoreUtil
                 k2016Data,
                 k2017MC,
                 k2017Data,
+                k2018MC,
+                k2018Data,
             };
 
             sample() {}
@@ -39,10 +41,13 @@ namespace CoreUtil
             CMS4Type CMS4Version(TString filepath);
             bool is2016(TString filepath);
             bool is2017(TString filepath);
+            bool is2018(TString filepath);
             bool is2016Data(TString filepath);
             bool is2017Data(TString filepath);
+            bool is2018Data(TString filepath);
             bool is2016MC(TString filepath);
             bool is2017MC(TString filepath);
+            bool is2018MC(TString filepath);
     };
 }
 
