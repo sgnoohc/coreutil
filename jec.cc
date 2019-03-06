@@ -346,6 +346,41 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
 }
 
 //####################################################################################
+void CoreUtil::jec::setFatJECFor(TString filename)
+{
+    if (filename.Contains("/"))
+    {
+        setFatJECFileNames("Summer16_07Aug2017_V11", "MC");
+    }
+
+    //===================================================================================================================================
+    // Now create the jet corrector based on what it is set to
+    //===================================================================================================================================
+
+    if (jetcorr_filenames_pfL1FastJetL2L3.size() == 0)
+    {
+        cout << "CoreUtil:: Error, sample not found. Check the JECs." << endl;
+        exit(100);
+    }
+
+    // Print what is used
+    cout << "CoreUtil:: JECs used:" << endl;
+    for (size_t jecind = 0; jecind < jetcorr_filenames_pfL1FastJetL2L3.size(); jecind++)
+    {
+        cout << "CoreUtil:: " << jetcorr_filenames_pfL1FastJetL2L3.at(jecind) << endl;
+    }
+
+    // Now create
+    jet_corrector_pfL1FastJetL2L3  = makeJetCorrector(jetcorr_filenames_pfL1FastJetL2L3);
+    jet_corrector_pfL1  = makeJetCorrector(jetcorr_filenames_pfL1);
+    jet_corrector_pfL1_postrun278802  = makeJetCorrector(jetcorr_filenames_pfL1_postrun278802);
+    // For jet uncertainty for 2016 the code was written in bad ways such that the jetunc was created on the fly above in the function
+    // Starting 2017 I tried to clean up a little bit so that it is created at the end
+    if (!jecUnc)
+        jecUnc = new JetCorrectionUncertainty(jetunc_filename_pfL1FastJetL2L3);
+}
+
+//####################################################################################
 void CoreUtil::jec::setJECFileNames(std::string jecEra, std::string type)
 {
     std::string basepath = jecdatapath.Data(); // A bit messy? Oh what the hell, this whole thing is messy... Besides I like TString generally
@@ -355,4 +390,16 @@ void CoreUtil::jec::setJECFileNames(std::string jecEra, std::string type)
     jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L3Absolute_AK4PFchs.txt");
     jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L2L3Residual_AK4PFchs.txt");
     jetunc_filename_pfL1FastJetL2L3 = basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_Uncertainty_AK4PFchs.txt";
+}
+
+//####################################################################################
+void CoreUtil::jec::setFatJECFileNames(std::string jecEra, std::string type)
+{
+    std::string basepath = "coreutil"; // A bit messy? Oh what the hell, this whole thing is messy... Besides I like TString generally
+    jetcorr_filenames_pfL1FastJetL2L3.clear();
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_L1FastJet_AK8PFPuppi.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_L2Relative_AK8PFPuppi.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_L3Absolute_AK8PFPuppi.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_L2L3Residual_AK8PFPuppi.txt");
+    jetunc_filename_pfL1FastJetL2L3 = basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_Uncertainty_AK8PFPuppi.txt";
 }

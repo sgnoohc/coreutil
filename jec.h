@@ -49,6 +49,8 @@ namespace CoreUtil
             JetCorrectionUncertainty* getJECUnc(bool = false, int = -999);
             void setJECFor(TString, bool = false);
             void setJECFileNames(std::string, std::string);
+            void setFatJECFor(TString);
+            void setFatJECFileNames(std::string, std::string);
     };
 }
 
