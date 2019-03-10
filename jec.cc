@@ -277,30 +277,27 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
 
     else if (filename.Contains("Run2018"))
     {
+        if (filename.Contains("Run2018A"))
+        {
+            setJECFileNames("Autumn18_RunA_V8", "DATA");
+        }
         if (filename.Contains("Run2018B"))
         {
-            setJECFileNames("Fall17_17Nov2017B_V6", "DATA");
+            setJECFileNames("Autumn18_RunB_V8", "DATA");
         }
         if (filename.Contains("Run2018C"))
         {
-            setJECFileNames("Fall17_17Nov2017C_V6", "DATA");
+            setJECFileNames("Autumn18_RunC_V8", "DATA");
         }
         if (filename.Contains("Run2018D"))
         {
-            setJECFileNames("Fall17_17Nov2017D_V6", "DATA");
+            setJECFileNames("Autumn18_RunD_V8", "DATA");
         }
-        if (filename.Contains("Run2018E"))
-        {
-            setJECFileNames("Fall17_17Nov2017E_V6", "DATA");
-        }
-        if (filename.Contains("Run2018F"))
-        {
-            setJECFileNames("Fall17_17Nov2017F_V6", "DATA");
-        }
+ 
     }
     else if (filename.Contains("Autumn18MiniAOD"))
     {
-        setJECFileNames("Fall17_17Nov2017_V6", "MC");
+        setJECFileNames("Autumn18_V8", "MC");
     }
     //-----------------------------------------------------------------------------------------------------------------------------------
     // 2016 fast sim
