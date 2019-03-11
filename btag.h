@@ -38,14 +38,28 @@ namespace CoreUtil
             BTagCalibrationReader* reader_light_UP;
             BTagCalibrationReader* reader_light_DN;
 
-            TH2D* h_btag_eff_b;
-            TH2D* h_btag_eff_c;
-            TH2D* h_btag_eff_udsg;
 
             BTagCalibration* calib_fastsim;
             BTagCalibrationReader* reader_fastsim;
             BTagCalibrationReader* reader_fastsim_UP;
             BTagCalibrationReader* reader_fastsim_DN;
+
+            BTagCalibrationReader* reader_medium;
+            BTagCalibrationReader* reader_loose;
+            BTagCalibrationReader* reader_tight;
+            BTagCalibrationReader* reader_medium_FS;
+            BTagCalibrationReader* reader_loose_FS;
+            BTagCalibrationReader* reader_tight_FS;
+            TFile *feff;
+            TH2D* h_btag_eff_b;
+            TH2D* h_btag_eff_c;
+            TH2D* h_btag_eff_udsg;
+            TH2D* h_loose_btag_eff_b;
+            TH2D* h_loose_btag_eff_c;
+            TH2D* h_loose_btag_eff_udsg;
+            TH2D* h_tight_btag_eff_b;
+            TH2D* h_tight_btag_eff_c;
+            TH2D* h_tight_btag_eff_udsg;
 
             TH2D* h_btag_eff_b_fastsim;
             TH2D* h_btag_eff_c_fastsim;
@@ -68,6 +82,7 @@ namespace CoreUtil
             void clearSF();
             void accumulateSF(int iJet, float pt, float eta);
             void accumulateSF2016CSVv2(int iJet, float pt, float eta);
+            void accumulateSFDeepRun2(int iJet, float pt, float eta);
             float getBtagEffFromFile(float pt, float eta, int mcFlavour, bool isFastsim);
 
     };
