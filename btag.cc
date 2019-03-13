@@ -7,123 +7,122 @@ void CoreUtil::btag::setup(bool fastsim, bool deepcsv, int yr)
     isdeepcsv = deepcsv;
     year = yr;
 
+    TString path = gSystem->Getenv("COREDIR");
+
     if (isdeepcsv)
-        {
-         calib = new BTagCalibration("DeepCSV", "../CORE/Tools/btagsf/run2_25ns/"+gconf.fn_btagSF_DeepCSV);
-         reader_medium = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
-         reader_medium->load(*calib, BTagEntry::FLAV_B, "comb");
-         reader_medium->load(*calib, BTagEntry::FLAV_C, "comb");
-         reader_medium->load(*calib, BTagEntry::FLAV_UDSG, "incl");
-         reader_tight = new BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});
-         reader_tight->load(*calib, BTagEntry::FLAV_B, "comb");
-         reader_tight->load(*calib, BTagEntry::FLAV_C, "comb");
-         reader_tight->load(*calib, BTagEntry::FLAV_UDSG, "incl");
-         reader_loose = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});
-         reader_loose->load(*calib, BTagEntry::FLAV_B, "comb");
-         reader_loose->load(*calib, BTagEntry::FLAV_C, "comb");
-         reader_loose->load(*calib, BTagEntry::FLAV_UDSG, "incl");
-
+    {
+        calib = new BTagCalibration("DeepCSV", (TString::Format("%s/Tools/btagsf/run2_25ns/", path.Data()) + gconf.fn_btagSF_DeepCSV).Data());
+        reader_medium = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
+        reader_medium->load(*calib, BTagEntry::FLAV_B, "comb");
+        reader_medium->load(*calib, BTagEntry::FLAV_C, "comb");
+        reader_medium->load(*calib, BTagEntry::FLAV_UDSG, "incl");
+        reader_tight = new BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});
+        reader_tight->load(*calib, BTagEntry::FLAV_B, "comb");
+        reader_tight->load(*calib, BTagEntry::FLAV_C, "comb");
+        reader_tight->load(*calib, BTagEntry::FLAV_UDSG, "incl");
+        reader_loose = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});
+        reader_loose->load(*calib, BTagEntry::FLAV_B, "comb");
+        reader_loose->load(*calib, BTagEntry::FLAV_C, "comb");
+        reader_loose->load(*calib, BTagEntry::FLAV_UDSG, "incl");
         // DeepCSV fastsim version of SFs
-         calib_fastsim = new BTagCalibration("deepcsv", "../CORE/Tools/btagsf/run2_fastsim/"+gconf.fn_btagSF_FS_DeepCSV);
-         reader_medium_FS = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
-         reader_medium_FS->load(*calib_fastsim, BTagEntry::FLAV_B, "fastsim");
-         reader_medium_FS->load(*calib_fastsim, BTagEntry::FLAV_C, "fastsim");
-         reader_medium_FS->load(*calib_fastsim, BTagEntry::FLAV_UDSG, "fastsim");
-         reader_tight_FS = new BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});
-         reader_tight_FS->load(*calib_fastsim, BTagEntry::FLAV_B, "fastsim");
-         reader_tight_FS->load(*calib_fastsim, BTagEntry::FLAV_C, "fastsim");
-         reader_tight_FS->load(*calib_fastsim, BTagEntry::FLAV_UDSG, "fastsim");
-         reader_loose_FS = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});
-         reader_loose_FS->load(*calib_fastsim, BTagEntry::FLAV_B, "fastsim");
-         reader_loose_FS->load(*calib_fastsim, BTagEntry::FLAV_C, "fastsim");
-         reader_loose_FS->load(*calib_fastsim, BTagEntry::FLAV_UDSG, "fastsim");
- 
-         TH2D* h_btag_eff_b_temp = NULL;
-         TH2D* h_btag_eff_c_temp = NULL;
-         TH2D* h_btag_eff_udsg_temp = NULL;
-         TH2D* h_tight_btag_eff_b_temp = NULL;
-         TH2D* h_tight_btag_eff_c_temp = NULL;
-         TH2D* h_tight_btag_eff_udsg_temp = NULL;
-         TH2D* h_loose_btag_eff_b_temp = NULL;
-         TH2D* h_loose_btag_eff_c_temp = NULL;
-         TH2D* h_loose_btag_eff_udsg_temp = NULL;
-        if(isfastsim){
-          // Created using https://github.com/cmstas/bTagEfficiencyTools. TODO: change to deepCSV version
-          feff =  new TFile("../CORE/Tools/btagsf/run2_fastsim/btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root");
-        } else {
-      // TODO: create efficiency in the phase space of the stop analysis
-      if (year == 2018)
-        feff =  new TFile("../CORE/Tools/btagsf/run2_25ns/btageff__ttbar_amc_102X_deepCSV.root");
-      else if (year == 2017)
-        feff =  new TFile("../CORE/Tools/btagsf/run2_25ns/btageff__ttbar_amc_94X_deepCSV.root");
-      else if (year == 2016)
-        feff =  new TFile("../CORE/Tools/btagsf/run2_25ns/btageff__ttbar_powheg_pythia8_25ns_Moriond17_deepCSV.root");
-       }
-      if (!feff) throw std::invalid_argument("coreutil::btag.cc: btagsf file does not exist!");
-      h_btag_eff_b_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_med_Eff_b");
-      h_btag_eff_c_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_med_Eff_c");
-      h_btag_eff_udsg_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_med_Eff_udsg");
-      h_tight_btag_eff_b_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_tight_Eff_b");
-      h_tight_btag_eff_c_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_tight_Eff_c");
-      h_tight_btag_eff_udsg_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_tight_Eff_udsg");
-      h_loose_btag_eff_b_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_loose_Eff_b");
-      h_loose_btag_eff_c_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_loose_Eff_c");
-      h_loose_btag_eff_udsg_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
-
-      if (!h_btag_eff_b_temp) throw std::invalid_argument("coreutil::btag.cc: can't find the btagging efficiency histogram!");
-      h_btag_eff_b = (TH2D*) h_btag_eff_b_temp->Clone("h_btag_eff_b");
-      h_btag_eff_c = (TH2D*) h_btag_eff_c_temp->Clone("h_btag_eff_c");
-      h_btag_eff_udsg = (TH2D*) h_btag_eff_udsg_temp->Clone("h_btag_eff_udsg");
-      h_tight_btag_eff_b = (TH2D*) h_tight_btag_eff_b_temp->Clone("h_tight_btag_eff_b");
-      h_tight_btag_eff_c = (TH2D*) h_tight_btag_eff_c_temp->Clone("h_tight_btag_eff_c");
-      h_tight_btag_eff_udsg = (TH2D*) h_tight_btag_eff_udsg_temp->Clone("h_tight_btag_eff_udsg");
-      h_loose_btag_eff_b = (TH2D*) h_loose_btag_eff_b_temp->Clone("h_loose_btag_eff_b");
-      h_loose_btag_eff_c = (TH2D*) h_loose_btag_eff_c_temp->Clone("h_loose_btag_eff_c");
-      h_loose_btag_eff_udsg = (TH2D*) h_loose_btag_eff_udsg_temp->Clone("h_loose_btag_eff_udsg");
-                std::cout << "loaded fullsim btag SFs" << std::endl;
-
-       }
-        else if(year==2016)
+        calib_fastsim = new BTagCalibration("deepcsv", (TString::Format("%s/Tools/btagsf/run2_fastsim/", path.Data()) + gconf.fn_btagSF_FS_DeepCSV).Data());
+        reader_medium_FS = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
+        reader_medium_FS->load(*calib_fastsim, BTagEntry::FLAV_B, "fastsim");
+        reader_medium_FS->load(*calib_fastsim, BTagEntry::FLAV_C, "fastsim");
+        reader_medium_FS->load(*calib_fastsim, BTagEntry::FLAV_UDSG, "fastsim");
+        reader_tight_FS = new BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});
+        reader_tight_FS->load(*calib_fastsim, BTagEntry::FLAV_B, "fastsim");
+        reader_tight_FS->load(*calib_fastsim, BTagEntry::FLAV_C, "fastsim");
+        reader_tight_FS->load(*calib_fastsim, BTagEntry::FLAV_UDSG, "fastsim");
+        reader_loose_FS = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});
+        reader_loose_FS->load(*calib_fastsim, BTagEntry::FLAV_B, "fastsim");
+        reader_loose_FS->load(*calib_fastsim, BTagEntry::FLAV_C, "fastsim");
+        reader_loose_FS->load(*calib_fastsim, BTagEntry::FLAV_UDSG, "fastsim");
+        TH2D* h_btag_eff_b_temp = NULL;
+        TH2D* h_btag_eff_c_temp = NULL;
+        TH2D* h_btag_eff_udsg_temp = NULL;
+        TH2D* h_tight_btag_eff_b_temp = NULL;
+        TH2D* h_tight_btag_eff_c_temp = NULL;
+        TH2D* h_tight_btag_eff_udsg_temp = NULL;
+        TH2D* h_loose_btag_eff_b_temp = NULL;
+        TH2D* h_loose_btag_eff_c_temp = NULL;
+        TH2D* h_loose_btag_eff_udsg_temp = NULL;
+        if (isfastsim)
+        {
+            // Created using https://github.com/cmstas/bTagEfficiencyTools. TODO: change to deepCSV version
+            feff =  new TFile(TString::Format("%s/Tools/btagsf/run2_fastsim/btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root", path.Data()));
+        }
+        else
+        {
+            // TODO: create efficiency in the phase space of the stop analysis
+            if (year == 2018)
+                feff =  new TFile(TString::Format("%s/Tools/btagsf/run2_25ns/btageff__ttbar_amc_102X_deepCSV.root", path.Data()));
+            else if (year == 2017)
+                feff =  new TFile(TString::Format("%s/Tools/btagsf/run2_25ns/btageff__ttbar_amc_94X_deepCSV.root", path.Data()));
+            else if (year == 2016)
+                feff =  new TFile(TString::Format("%s/Tools/btagsf/run2_25ns/btageff__ttbar_powheg_pythia8_25ns_Moriond17_deepCSV.root", path.Data()));
+        }
+        if (!feff) throw std::invalid_argument("coreutil::btag.cc: btagsf file does not exist!");
+        h_btag_eff_b_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_med_Eff_b");
+        h_btag_eff_c_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_med_Eff_c");
+        h_btag_eff_udsg_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_med_Eff_udsg");
+        h_tight_btag_eff_b_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_tight_Eff_b");
+        h_tight_btag_eff_c_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_tight_Eff_c");
+        h_tight_btag_eff_udsg_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_tight_Eff_udsg");
+        h_loose_btag_eff_b_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_loose_Eff_b");
+        h_loose_btag_eff_c_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_loose_Eff_c");
+        h_loose_btag_eff_udsg_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
+        if (!h_btag_eff_b_temp) throw std::invalid_argument("coreutil::btag.cc: can't find the btagging efficiency histogram!");
+        h_btag_eff_b = (TH2D*) h_btag_eff_b_temp->Clone("h_btag_eff_b");
+        h_btag_eff_c = (TH2D*) h_btag_eff_c_temp->Clone("h_btag_eff_c");
+        h_btag_eff_udsg = (TH2D*) h_btag_eff_udsg_temp->Clone("h_btag_eff_udsg");
+        h_tight_btag_eff_b = (TH2D*) h_tight_btag_eff_b_temp->Clone("h_tight_btag_eff_b");
+        h_tight_btag_eff_c = (TH2D*) h_tight_btag_eff_c_temp->Clone("h_tight_btag_eff_c");
+        h_tight_btag_eff_udsg = (TH2D*) h_tight_btag_eff_udsg_temp->Clone("h_tight_btag_eff_udsg");
+        h_loose_btag_eff_b = (TH2D*) h_loose_btag_eff_b_temp->Clone("h_loose_btag_eff_b");
+        h_loose_btag_eff_c = (TH2D*) h_loose_btag_eff_c_temp->Clone("h_loose_btag_eff_c");
+        h_loose_btag_eff_udsg = (TH2D*) h_loose_btag_eff_udsg_temp->Clone("h_loose_btag_eff_udsg");
+        std::cout << "loaded fullsim btag SFs" << std::endl;
+    }
+    else if (year == 2016)
+    {
+        // setup btag calibration readers
+        string corepath = TString::Format("%s/Tools/btagsf/data/run2_25ns/", path.Data()).Data();
+        calib           = new BTagCalibration("csvv2", Form("%s/CSVv2_Moriond17_B_H.csv", corepath.c_str())); // Moriond17 version of SFs
+        reader_fullsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});
+        reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_B, "comb");
+        reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_C, "comb");
+        reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_UDSG, "incl");
+        // get btag efficiencies
+        TFile * f_btag_eff           = new TFile("${COREDIR}/Tools/btagsf/data/run2_25ns/btageff__ttbar_powheg_pythia8_25ns_Moriond17.root");
+        TH2D  * h_btag_eff_b_temp    = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_b");
+        TH2D  * h_btag_eff_c_temp    = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_c");
+        TH2D  * h_btag_eff_udsg_temp = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
+        h_btag_eff_b    = (TH2D*) h_btag_eff_b_temp    -> Clone("h_btag_eff_b");
+        h_btag_eff_c    = (TH2D*) h_btag_eff_c_temp    -> Clone("h_btag_eff_c");
+        h_btag_eff_udsg = (TH2D*) h_btag_eff_udsg_temp -> Clone("h_btag_eff_udsg");
+        // extra copy for fastsim -> fullsim SFs
+        if (isfastsim)
         {
             // setup btag calibration readers
-            string corepath = "../CORE/Tools/btagsf/data/run2_25ns/";
-            calib           = new BTagCalibration("csvv2", Form("%s/CSVv2_Moriond17_B_H.csv",corepath.c_str())); // Moriond17 version of SFs
-            reader_fullsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central",{"up","down"});
-            reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_B, "comb");
-            reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_C, "comb");
-            reader_fullsim->load(*calib, BTagEntry::JetFlavor::FLAV_UDSG, "incl");
+            calib_fastsim     = new BTagCalibration("CSV", "coreutil/data/btagsf/fastsim_csvv2_ttbar_26_1_2017.csv"); // Moriond 17 25ns fastsim version of SFs
+            reader_fastsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});
+            reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_UDSG, "fastsim");
+            reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_B, "fastsim");
+            reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_C, "fastsim");
             // get btag efficiencies
-            TFile * f_btag_eff           = new TFile("${COREDIR}/Tools/btagsf/data/run2_25ns/btageff__ttbar_powheg_pythia8_25ns_Moriond17.root");
-            TH2D  * h_btag_eff_b_temp    = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_b");
-            TH2D  * h_btag_eff_c_temp    = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_c");
-            TH2D  * h_btag_eff_udsg_temp = (TH2D*) f_btag_eff->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
-            h_btag_eff_b    = (TH2D*) h_btag_eff_b_temp    -> Clone("h_btag_eff_b");
-            h_btag_eff_c    = (TH2D*) h_btag_eff_c_temp    -> Clone("h_btag_eff_c");
-            h_btag_eff_udsg = (TH2D*) h_btag_eff_udsg_temp -> Clone("h_btag_eff_udsg");
-            // extra copy for fastsim -> fullsim SFs
-            if (isfastsim)
-            {
-                // setup btag calibration readers
-                calib_fastsim     = new BTagCalibration("CSV", "coreutil/data/btagsf/fastsim_csvv2_ttbar_26_1_2017.csv"); // Moriond 17 25ns fastsim version of SFs
-                reader_fastsim = new BTagCalibrationReader(BTagEntry::OP_LOOSE, "central",{"up","down"});
-                reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_UDSG, "fastsim");
-                reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_B, "fastsim");
-                reader_fastsim->load(*calib_fastsim, BTagEntry::JetFlavor::FLAV_C, "fastsim");
-                // get btag efficiencies
-                TFile * f_btag_eff_fastsim           = new TFile("coreutil/data/btagsf/btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root");
-                TH2D  * h_btag_eff_b_fastsim_temp    = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_b");
-                TH2D  * h_btag_eff_c_fastsim_temp    = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_c");
-                TH2D  * h_btag_eff_udsg_fastsim_temp = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
-                h_btag_eff_b_fastsim    = (TH2D*) h_btag_eff_b_fastsim_temp    -> Clone("h_btag_eff_b_fastsim");
-                h_btag_eff_c_fastsim    = (TH2D*) h_btag_eff_c_fastsim_temp    -> Clone("h_btag_eff_c_fastsim");
-                h_btag_eff_udsg_fastsim = (TH2D*) h_btag_eff_udsg_fastsim_temp -> Clone("h_btag_eff_udsg_fastsim");
-                std::cout << "loaded fullsim and fastsim btag SFs" << std::endl;
-            }
-            else
-            {
-                std::cout << "loaded fullsim btag SFs" << std::endl;
-            }
+            TFile * f_btag_eff_fastsim           = new TFile("coreutil/data/btagsf/btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root");
+            TH2D  * h_btag_eff_b_fastsim_temp    = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_b");
+            TH2D  * h_btag_eff_c_fastsim_temp    = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_c");
+            TH2D  * h_btag_eff_udsg_fastsim_temp = (TH2D*) f_btag_eff_fastsim->Get("h2_BTaggingEff_csv_loose_Eff_udsg");
+            h_btag_eff_b_fastsim    = (TH2D*) h_btag_eff_b_fastsim_temp    -> Clone("h_btag_eff_b_fastsim");
+            h_btag_eff_c_fastsim    = (TH2D*) h_btag_eff_c_fastsim_temp    -> Clone("h_btag_eff_c_fastsim");
+            h_btag_eff_udsg_fastsim = (TH2D*) h_btag_eff_udsg_fastsim_temp -> Clone("h_btag_eff_udsg_fastsim");
+            std::cout << "loaded fullsim and fastsim btag SFs" << std::endl;
         }
+        else
+            std::cout << "loaded fullsim btag SFs" << std::endl;
+    }
 
 }
 

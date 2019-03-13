@@ -7,6 +7,7 @@
 
 #include "TH2.h"
 #include "TFile.h"
+#include "TSystem.h"
 
 #include <iostream>
 
@@ -76,7 +77,7 @@ namespace CoreUtil
             bool isdeepcsv;
             int year;
 
-            btag(bool fastsim=false, bool isdeepcsv=false, int year=2016) { setup(fastsim, isdeepcsv, year); }
+            btag(bool fsim=false, bool isdpcsv=false, int yr=2016) { setup(fsim, isdpcsv, yr); }
             ~btag() {}
             void setup(bool=false, bool=false, int=2016);
             void clearSF();

@@ -629,10 +629,14 @@ void CoreUtil::genpart::printPartonsWithCondition(TString message, std::function
         if (pass)
         {
             if (pass(idx))
+            {
+                std::cout <<  " i: " << i << " ";
                 printParticle(idx);
+            }
         }
         else
         {
+            std::cout <<  " i: " << i << " ";
             printParticle(idx);
         }
     }
