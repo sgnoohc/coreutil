@@ -362,6 +362,7 @@ void CoreUtil::jec::setFatJECFor(TString filename)
     //-----------------------------------------------------------------------------------------------------------------------------------
     // 2016
     //-----------------------------------------------------------------------------------------------------------------------------------
+    // TODO 2016 Data
     if (filename.Contains("Summer16"))
     {
         setFatJECFileNames("Summer16_07Aug2017_V11", "MC");
@@ -396,11 +397,32 @@ void CoreUtil::jec::setFatJECFor(TString filename)
     {
         setFatJECFileNames("Fall17_17Nov2017_V6", "MC");
     }
-    //========================
-    //
-    // TODO: 2018 is not set yet
-    //
-    //========================
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    // 2018
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    else if (filename.Contains("Run2018"))
+    {
+        if (filename.Contains("Run2018A"))
+        {
+            setFatJECFileNames("Autumn18_RunA_V8", "DATA");
+        }
+        if (filename.Contains("Run2018B"))
+        {
+            setFatJECFileNames("Autumn18_RunB_V8", "DATA");
+        }
+        if (filename.Contains("Run2018C"))
+        {
+            setFatJECFileNames("Autumn18_RunC_V8", "DATA");
+        }
+        if (filename.Contains("Run2018D"))
+        {
+            setFatJECFileNames("Autumn18_RunD_V8", "DATA");
+        }
+    }
+    else if (filename.Contains("Autumn18MiniAOD"))
+    {
+        setFatJECFileNames("Autumn18_V8", "MC");
+    }
 
     //===================================================================================================================================
     // Now create the jet corrector based on what it is set to
