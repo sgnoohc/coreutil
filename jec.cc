@@ -345,10 +345,62 @@ void CoreUtil::jec::setJECFor(TString filename, bool isfastsim)
 //####################################################################################
 void CoreUtil::jec::setFatJECFor(TString filename)
 {
-    if (filename.Contains("/"))
+
+    // If current filename same as the one already set to then skip
+    if (current_filename == filename)
+        return;
+    
+    // Reset
+    resetObjects();
+    
+    //    cout << endl;
+    cout << "CoreUtil:: Create new JEC for " << filename << endl;
+    
+    // Set the current_filename to the provided filename
+    current_filename = filename;
+
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    // 2016
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    if (filename.Contains("Summer16"))
     {
         setFatJECFileNames("Summer16_07Aug2017_V11", "MC");
     }
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    // 2017
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    else if (filename.Contains("Run2017"))
+    {
+        if (filename.Contains("Run2017B"))
+        {
+            setFatJECFileNames("Fall17_17Nov2017B_V6", "DATA");
+        }
+        if (filename.Contains("Run2017C"))
+        {
+            setFatJECFileNames("Fall17_17Nov2017C_V6", "DATA");
+        }
+        if (filename.Contains("Run2017D"))
+        {
+            setFatJECFileNames("Fall17_17Nov2017D_V6", "DATA");
+        }
+        if (filename.Contains("Run2017E"))
+        {
+            setFatJECFileNames("Fall17_17Nov2017E_V6", "DATA");
+        }
+        if (filename.Contains("Run2017F"))
+        {
+            setFatJECFileNames("Fall17_17Nov2017F_V6", "DATA");
+        }
+    }
+    else if (filename.Contains("Fall17MiniAOD"))
+    {
+        setFatJECFileNames("Fall17_17Nov2017_V6", "MC");
+    }
+    //========================
+    //
+    // TODO: 2018 is not set yet
+    //
+    //========================
 
     //===================================================================================================================================
     // Now create the jet corrector based on what it is set to
@@ -392,11 +444,11 @@ void CoreUtil::jec::setJECFileNames(std::string jecEra, std::string type)
 //####################################################################################
 void CoreUtil::jec::setFatJECFileNames(std::string jecEra, std::string type)
 {
-    std::string basepath = "coreutil"; // A bit messy? Oh what the hell, this whole thing is messy... Besides I like TString generally
+    std::string basepath = jecdatapath.Data(); // A bit messy? Oh what the hell, this whole thing is messy... Besides I like TString generally
     jetcorr_filenames_pfL1FastJetL2L3.clear();
-    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_L1FastJet_AK8PFPuppi.txt");
-    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_L2Relative_AK8PFPuppi.txt");
-    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_L3Absolute_AK8PFPuppi.txt");
-    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_L2L3Residual_AK8PFPuppi.txt");
-    jetunc_filename_pfL1FastJetL2L3 = basepath+"/data/jetCorrections/source_80X/"+type+"/"+jecEra+"_"+type+"_Uncertainty_AK8PFPuppi.txt";
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L1FastJet_AK8PFPuppi.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L2Relative_AK8PFPuppi.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L3Absolute_AK8PFPuppi.txt");
+    jetcorr_filenames_pfL1FastJetL2L3.push_back(basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_L2L3Residual_AK8PFPuppi.txt");
+    jetunc_filename_pfL1FastJetL2L3 = basepath+"run2_25ns/"+jecEra+"_"+type+"/"+jecEra+"_"+type+"_Uncertainty_AK8PFPuppi.txt";
 }
