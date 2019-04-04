@@ -57,7 +57,7 @@ void CoreUtil::trigger::process()
     setHLTBranch("HLT_Mu8_TrkIsoVVL_v",  true, HLT_SingleIsoMu8_2017 );
     setHLTBranch("HLT_Mu17_TrkIsoVVL_v",  true, HLT_SingleIsoMu17_2017 );
 
-    // TODO for fake rate baby for 2018
+    // for fake rate baby for 2018 (cf. 2017 is identical to 2018)
     setHLTBranch("HLT_Ele8_CaloIdM_TrackIdM_PFJet30_v" ,  true, HLT_SingleEl8_2018 );
     setHLTBranch("HLT_Ele17_CaloIdM_TrackIdM_PFJet30_v",  true, HLT_SingleEl17_2018 );
     setHLTBranch("HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_v" ,  true, HLT_SingleIsoEl8_2018 );
