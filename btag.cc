@@ -1,5 +1,5 @@
 #include "btag.h"
-#include "Config.h"
+
 //########################################################################################
 void CoreUtil::btag::setup(bool fastsim, bool deepcsv, int yr)
 {
