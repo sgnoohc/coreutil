@@ -53,9 +53,19 @@ void CoreUtil::jec::resetObjects()
 //####################################################################################
 FactorizedJetCorrector* CoreUtil::jec::getJECL1(bool isData, int run)
 {
-    if (isData && run >= 278802 && run <= 278808)
+    // For older version of the JEC, (before my time)
+    // For some specific runs, they had different JEC?
+    // It is possible this is not needed at all anymore
+    if (gconf.cmssw_ver == 80)
     {
-        return jet_corrector_pfL1_postrun278802;
+        if (isData && run >= 278802 && run <= 278808)
+        {
+            return jet_corrector_pfL1_postrun278802;
+        }
+        else
+        {
+            return jet_corrector_pfL1;
+        }
     }
     else
     {
@@ -66,9 +76,19 @@ FactorizedJetCorrector* CoreUtil::jec::getJECL1(bool isData, int run)
 //####################################################################################
 FactorizedJetCorrector* CoreUtil::jec::getJEC(bool isData, int run)
 {
-    if (isData && run >= 278802 && run <= 278808)
+    // For older version of the JEC, (before my time)
+    // For some specific runs, they had different JEC?
+    // It is possible this is not needed at all anymore
+    if (gconf.cmssw_ver == 80)
     {
-        return jet_corrector_pfL1FastJetL2L3_postrun278802;
+        if (isData && run >= 278802 && run <= 278808)
+        {
+            return jet_corrector_pfL1FastJetL2L3_postrun278802;
+        }
+        else
+        {
+            return jet_corrector_pfL1FastJetL2L3;
+        }
     }
     else
     {
@@ -79,9 +99,19 @@ FactorizedJetCorrector* CoreUtil::jec::getJEC(bool isData, int run)
 //####################################################################################
 JetCorrectionUncertainty* CoreUtil::jec::getJECUnc(bool isData, int run)
 {
-    if (isData && run >= 278802 && run <= 278808)
+    // For older version of the JEC, (before my time)
+    // For some specific runs, they had different JEC?
+    // It is possible this is not needed at all anymore
+    if (gconf.cmssw_ver == 80)
     {
-        return jecUnc_postrun278802;;
+        if (isData && run >= 278802 && run <= 278808)
+        {
+            return jecUnc_postrun278802;;
+        }
+        else
+        {
+            return jecUnc;
+        }
     }
     else
     {
