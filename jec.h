@@ -11,6 +11,7 @@
 #include "Tools/jetcorr/FactorizedJetCorrector.h"
 #include "Tools/JetCorrector.h"
 #include "Tools/jetcorr/JetCorrectionUncertainty.h"
+#include "Config.h"
 
 namespace CoreUtil
 {

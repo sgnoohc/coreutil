@@ -4,6 +4,7 @@
 #include "Tools/btagsf/BTagCalibrationStandalone.h"
 
 #include "CMS3.h"
+#include "Config.h"
 
 #include "TH2.h"
 #include "TFile.h"
