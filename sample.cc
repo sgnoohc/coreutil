@@ -15,9 +15,12 @@ CoreUtil::sample::CMS4Type CoreUtil::sample::CMS4Version(TString fname)
     if (fname.Contains("CMS4_V09-04-19"           )) return k2017MC;
     if (fname.Contains("CMS4_V09-04-17"           )) return k2017MC;
     if (fname.Contains("CMS4_V00-00-02"           )) return k2016MC;
+    if (fname.Contains("RunIISummer16MiniAODv3"   )) return k2016MC;
     if (fname.Contains("RunIIFall17MiniAODv2"     )) return k2017MC;
     if (fname.Contains("RunIIFall17MiniAOD"       )) return k2017MC;
     if (fname.Contains("RunIIAutumn18MiniAOD"       )) return k2018MC;
+    if (fname.Contains("Run2016") and fname.Contains("CMS4_V10-02-05")) return k2016Data;
+    if (fname.Contains("Run2016") and fname.Contains("CMS4_V10-02-04")) return k2016Data;
     if (fname.Contains("Run2017") and fname.Contains("CMS4_V10-02-05")) return k2017Data;
     if (fname.Contains("Run2018") and fname.Contains("CMS4_V10-02-04")) return k2018Data;
 
