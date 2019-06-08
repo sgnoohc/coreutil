@@ -29,6 +29,7 @@ CoreUtil::sample::CMS4Type CoreUtil::sample::CMS4Version(TString fname)
 }
 
 //_________________________________________________________________________________________________
+bool CoreUtil::sample::is201680X (TString fname) { return (is2016Data(fname) || is2016MC(fname)) and fname.Contains("80X"); }
 bool CoreUtil::sample::is2016    (TString fname) { return is2016Data(fname) || is2016MC(fname); }
 bool CoreUtil::sample::is2017    (TString fname) { return is2017Data(fname) || is2017MC(fname); }
 bool CoreUtil::sample::is2018    (TString fname) { return is2018Data(fname) || is2018MC(fname); }
