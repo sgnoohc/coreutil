@@ -11,7 +11,7 @@ void CoreUtil::btag::setup(bool fastsim, bool deepcsv, int yr)
 
     if (isdeepcsv)
     {
-        calib = new BTagCalibration("DeepCSV", (TString::Format("%s/Tools/btagsf/run2_25ns/", path.Data()) + gconf.fn_btagSF_DeepCSV).Data());
+        calib = new BTagCalibration("DeepCSV", (TString::Format("%s/Tools/btagsf/data/run2_25ns/", path.Data()) + gconf.fn_btagSF_DeepCSV).Data());
         reader_medium = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
         reader_medium->load(*calib, BTagEntry::FLAV_B, "comb");
         reader_medium->load(*calib, BTagEntry::FLAV_C, "comb");
@@ -56,11 +56,11 @@ void CoreUtil::btag::setup(bool fastsim, bool deepcsv, int yr)
         {
             // TODO: create efficiency in the phase space of the stop analysis
             if (year == 2018)
-                feff =  new TFile(TString::Format("%s/Tools/btagsf/run2_25ns/btageff__ttbar_amc_102X_deepCSV.root", path.Data()));
+                feff =  new TFile(TString::Format("%s/Tools/btagsf/data/run2_25ns/btageff__ttbar_amc_102X_deepCSV.root", path.Data()));
             else if (year == 2017)
-                feff =  new TFile(TString::Format("%s/Tools/btagsf/run2_25ns/btageff__ttbar_amc_94X_deepCSV.root", path.Data()));
+                feff =  new TFile(TString::Format("%s/Tools/btagsf/data/run2_25ns/btageff__ttbar_amc_94X_deepCSV.root", path.Data()));
             else if (year == 2016)
-                feff =  new TFile(TString::Format("%s/Tools/btagsf/run2_25ns/btageff__ttbar_powheg_pythia8_25ns_Moriond17_deepCSV.root", path.Data()));
+                feff =  new TFile(TString::Format("%s/Tools/btagsf/data/run2_25ns/btageff__ttbar_powheg_pythia8_25ns_Moriond17_deepCSV.root", path.Data()));
         }
         if (!feff) throw std::invalid_argument("coreutil::btag.cc: btagsf file does not exist!");
         h_btag_eff_b_temp = (TH2D*) feff->Get("h2_BTaggingEff_csv_med_Eff_b");
