@@ -2,18 +2,37 @@
 
 //////////////////////////////////////////////////////////////////////
 
-CoreUtil::btagdeepcsv::btagdeepcsv() {}
+CoreUtil::btagdeepcsv::btagdeepcsv():
+            calib(0),
+            reader_medium(0),
+            reader_loose(0),
+            reader_tight(0),
+            calib_fastsim(0),
+            reader_medium_FS(0),
+            reader_loose_FS(0),
+            reader_tight_FS(0),
+            feff(0),
+            h_btag_eff_b(0),
+            h_btag_eff_c(0),
+            h_btag_eff_udsg(0),
+            h_loose_btag_eff_b(0),
+            h_loose_btag_eff_c(0),
+            h_loose_btag_eff_udsg(0),
+            h_tight_btag_eff_b(0),
+            h_tight_btag_eff_c(0),
+            h_tight_btag_eff_udsg(0)
+{}
 
 CoreUtil::btagdeepcsv::~btagdeepcsv(){
 
-    delete calib;
-    delete calib_fastsim;
-    delete reader_medium;
-    delete reader_tight;
-    delete reader_loose;
-    delete reader_medium_FS;
-    delete reader_tight_FS;
-    delete reader_loose_FS;
+    if (calib) delete calib;
+    if (calib_fastsim) delete calib_fastsim;
+    if (reader_medium) delete reader_medium;
+    if (reader_tight) delete reader_tight;
+    if (reader_loose) delete reader_loose;
+    if (reader_medium_FS) delete reader_medium_FS;
+    if (reader_tight_FS) delete reader_tight_FS;
+    if (reader_loose_FS) delete reader_loose_FS;
 
     feff->Close();
 
@@ -48,8 +67,10 @@ void CoreUtil::btagdeepcsv::setup(bool isFastsim, int year, std::string fn_btagS
 
     std::cout << "[CoreUtil::btagdeepcsv] >> loaded btag SFs: " << fn_btagSF << ((isFastsim)? " and "+fn_btagSF_FS : "") << std::endl;
 
+    TString path = gSystem->Getenv("COREDIR");
+
     // 25s version of SFs
-    calib = new BTagCalibration("DeepCSV", "../CORE/Tools/btagsf/data/run2_25ns/"+fn_btagSF); // DeepCSV version of SFs
+    calib = new BTagCalibration("DeepCSV", (TString::Format("%s/Tools/btagsf/data/run2_25ns/", path.Data())+fn_btagSF).Data()); // DeepCSV version of SFs
     reader_medium = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
     reader_medium->load(*calib, BTagEntry::FLAV_B, "comb");
     reader_medium->load(*calib, BTagEntry::FLAV_C, "comb");
@@ -64,7 +85,7 @@ void CoreUtil::btagdeepcsv::setup(bool isFastsim, int year, std::string fn_btagS
     reader_loose->load(*calib, BTagEntry::FLAV_UDSG, "incl");
 
     if (isFastsim) {
-        calib_fastsim = new BTagCalibration("deepcsv", "../CORE/Tools/btagsf/data/run2_fastsim/"+fn_btagSF_FS); // DeepCSV fastsim version of SFs
+        calib_fastsim = new BTagCalibration("deepcsv", (TString::Format("%s/Tools/btagsf/data/run2_fastsim/", path.Data())+fn_btagSF_FS).Data()); // DeepCSV fastsim version of SFs
         reader_medium_FS = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
         reader_medium_FS->load(*calib_fastsim, BTagEntry::FLAV_B, "fastsim");
         reader_medium_FS->load(*calib_fastsim, BTagEntry::FLAV_C, "fastsim");
@@ -82,16 +103,16 @@ void CoreUtil::btagdeepcsv::setup(bool isFastsim, int year, std::string fn_btagS
     if(isFastsim){
         // Created using https://github.com/cmstas/bTagEfficiencyTools.
         if (year >= 2017)
-            feff =  new TFile("../CORE/Tools/btagsf/data/run2_fastsim/btageff__SMS-T1tttt_2017_94X_deepCSV.root");
+            feff =  new TFile(TString::Format("%s/Tools/btagsf/data/run2_fastsim/btageff__SMS-T1tttt_2017_94X_deepCSV.root", path.Data()));
         else if (year == 2016)
-            feff =  new TFile("../CORE/Tools/btagsf/data/run2_fastsim/btageff__SMS-T1tttt_2016_80X_deepCSV.root");
+            feff =  new TFile(TString::Format("%s/Tools/btagsf/data/run2_fastsim/btageff__SMS-T1tttt_2016_80X_deepCSV.root", path.Data()));
     } else {
         if (year == 2018)
-            feff =  new TFile("../CORE/Tools/btagsf/data/run2_25ns/btageff__ttbar_amc_102X_deepCSV.root");
+            feff =  new TFile(TString::Format("%s/Tools/btagsf/data/run2_25ns/btageff__ttbar_amc_102X_deepCSV.root", path.Data()));
         else if (year == 2017)
-            feff =  new TFile("../CORE/Tools/btagsf/data/run2_25ns/btageff__ttbar_amc_94X_deepCSV.root");
+            feff =  new TFile(TString::Format("%s/Tools/btagsf/data/run2_25ns/btageff__ttbar_amc_94X_deepCSV.root", path.Data()));
         else if (year == 2016)
-            feff =  new TFile("../CORE/Tools/btagsf/data/run2_25ns/btageff__ttbar_powheg_pythia8_25ns_Moriond17_deepCSV.root");
+            feff =  new TFile(TString::Format("%s/Tools/btagsf/data/run2_25ns/btageff__ttbar_powheg_pythia8_25ns_Moriond17_deepCSV.root", path.Data()));
     }
     if (!feff) throw std::invalid_argument("CoreUtil::btagdeepcsv.cc: btagsf file does not exist!");
 
