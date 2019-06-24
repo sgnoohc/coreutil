@@ -39,6 +39,7 @@ namespace CoreUtil
             ~sample() {}
             TString nicename(TString filepath);
             CMS4Type CMS4Version(TString filepath);
+            bool is201680X(TString filepath);
             bool is2016(TString filepath);
             bool is2017(TString filepath);
             bool is2018(TString filepath);
