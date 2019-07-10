@@ -15,20 +15,52 @@ void CoreUtil::met::process(jec& jec_, jer& jer_)
 //########################################################################################
 void CoreUtil::met::process(jec& jec_, jer* jer_)
 {
+    //============
+    // PF
+    //============
+
     // met with no unc
-    pair <float, float> met_T1CHS_miniAOD_CORE_p2 = getT1CHSMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()));
+    pair <float, float> met_T1CHS_miniAOD_CORE_p2 = getT1CHSMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()), 0, 0, false, gconf.year == 2017 ? 2 : 0);
     met_pt  = met_T1CHS_miniAOD_CORE_p2.first;
     met_phi = met_T1CHS_miniAOD_CORE_p2.second;
 
     // up variation
-    pair <float, float> met_T1CHS_miniAOD_CORE_up_p2 = getT1CHSMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()), jec_.getJECUnc(cms3.evt_isRealData(), cms3.evt_run()), 1);
+    pair <float, float> met_T1CHS_miniAOD_CORE_up_p2 = getT1CHSMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()), jec_.getJECUnc(cms3.evt_isRealData(), cms3.evt_run()), 1, false, gconf.year == 2017 ? 2 : 0);
     met_up_pt  = met_T1CHS_miniAOD_CORE_up_p2.first;
     met_up_phi = met_T1CHS_miniAOD_CORE_up_p2.second;
 
     // dn variation
-    pair <float, float> met_T1CHS_miniAOD_CORE_dn_p2 = getT1CHSMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()), jec_.getJECUnc(cms3.evt_isRealData(), cms3.evt_run()), 0);
+    pair <float, float> met_T1CHS_miniAOD_CORE_dn_p2 = getT1CHSMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()), jec_.getJECUnc(cms3.evt_isRealData(), cms3.evt_run()), 0, false, gconf.year == 2017 ? 2 : 0);
     met_dn_pt  = met_T1CHS_miniAOD_CORE_dn_p2.first;
     met_dn_phi = met_T1CHS_miniAOD_CORE_dn_p2.second;
+
+    ////============
+    //// PUPPI
+    ////============
+
+    //// met with no unc
+    //pair <float, float> met_T1PUPPIMET_miniAOD_CORE_p2 = getT1PUPPIMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()));
+    //met_puppi_pt  = met_T1PUPPIMET_miniAOD_CORE_p2.first;
+    //met_puppi_phi = met_T1PUPPIMET_miniAOD_CORE_p2.second;
+
+    ////============
+    //// PF
+    ////============
+
+    //// met with no unc
+    //pair <float, float> met_MUEGCLEANED_miniAOD_CORE_p2 = getT1CHSMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()), 0, 0, false, 1);
+    //met_muonegcleaned_pt  = met_MUEGCLEANED_miniAOD_CORE_p2.first;
+    //met_muonegcleaned_phi = met_MUEGCLEANED_miniAOD_CORE_p2.second;
+
+    //// up variation
+    //pair <float, float> met_MUEGCLEANED_miniAOD_CORE_up_p2 = getT1CHSMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()), jec_.getJECUnc(cms3.evt_isRealData(), cms3.evt_run()), 1, false, 1);
+    //met_muonegcleaned_up_pt  = met_MUEGCLEANED_miniAOD_CORE_up_p2.first;
+    //met_muonegcleaned_up_phi = met_MUEGCLEANED_miniAOD_CORE_up_p2.second;
+
+    //// dn variation
+    //pair <float, float> met_MUEGCLEANED_miniAOD_CORE_dn_p2 = getT1CHSMET_fromMINIAOD(jec_.getJEC(cms3.evt_isRealData(), cms3.evt_run()), jec_.getJECUnc(cms3.evt_isRealData(), cms3.evt_run()), 0, false, 1);
+    //met_muonegcleaned_dn_pt  = met_MUEGCLEANED_miniAOD_CORE_dn_p2.first;
+    //met_muonegcleaned_dn_phi = met_MUEGCLEANED_miniAOD_CORE_dn_p2.second;
 
     //============
     // JER
@@ -87,3 +119,26 @@ void CoreUtil::met::process(jec& jec_, jer* jer_)
         met_jerdn_phi = met_phi;
     }
 }
+
+//cms3.evt_pfmet_raw();
+//cms3.evt_pfmetPhi_raw();
+//cms3.evt_muegclean_pfmet_raw();
+//cms3.evt_muegclean_pfmetPhi_raw();
+//cms3.evt_old_pfmet_raw();
+//cms3.evt_old_pfmetPhi_raw();
+
+//cms3.pfjets_p4();
+//cms3.pfjets_undoJEC();
+//cms3.pfjets_chargedEmE();
+//cms3.pfjets_neutralEmE();
+//cms3.pfjets_pfcandmup4();
+
+//// get L1FastL2L3 total correction
+//jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
+//jet_corrector->setJetA  ( cms3.pfjets_area().at(iJet) );
+//jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
+//jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
+
+////Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
+//vector<float> corr_vals = jet_corrector->getSubCorrections();
+

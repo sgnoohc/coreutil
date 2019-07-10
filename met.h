@@ -36,6 +36,18 @@ namespace CoreUtil
             float met_jerdn_pt;
             float met_jerdn_phi;
 
+            float met_puppi_pt;
+            float met_puppi_phi;
+
+            float met_muonegcleaned_pt;
+            float met_muonegcleaned_phi;
+
+            float met_muonegcleaned_up_pt;
+            float met_muonegcleaned_up_phi;
+
+            float met_muonegcleaned_dn_pt;
+            float met_muonegcleaned_dn_phi;
+
             met() {}
             ~met() {}
 
