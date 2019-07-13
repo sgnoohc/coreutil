@@ -565,6 +565,12 @@ bool CoreUtil::genpart::isStar(int i)
     return false;
 }
 
+//##########################################################################################
+bool CoreUtil::genpart::isSame(int i, int j)
+{
+    if (not (cms3.genps_id().at(i) == cms3.genps_id_simplemother().at(j))) return false;
+    if (not (cms3.genps_id_simplemother().at(i) == cms3.genps_id_simplegrandma().at(j))) return false;
+}
 
 //##########################################################################################
 bool CoreUtil::genpart::isMotherFromBoson(int i)
@@ -573,8 +579,14 @@ bool CoreUtil::genpart::isMotherFromBoson(int i)
         return true;
     if (abs(cms3.genps_id_simplegrandma().at(i)) == 24)
         return true;
-    if (abs(cms3.genps_id_simplegrandma().at(i)) == 25)
+    // if (abs(cms3.genps_id_simplegrandma().at(i)) == 25)
+    //     return true;
+    if (abs(cms3.genps_id_simplemother().at(i)) == 23)
         return true;
+    if (abs(cms3.genps_id_simplemother().at(i)) == 24)
+        return true;
+    // if (abs(cms3.genps_id_simplemother().at(i)) == 25)
+    //     return true;
     return false;
 }
 
@@ -582,6 +594,8 @@ bool CoreUtil::genpart::isMotherFromBoson(int i)
 bool CoreUtil::genpart::isLeptonFromBoson(int i)
 {
     if (cms3.genps_status().at(i) == 1 && (abs(cms3.genps_id().at(i)) == 11 || abs(cms3.genps_id().at(i)) == 13) && isMotherFromBoson(i))
+        return true;
+    if (cms3.genps_status().at(i) == 23 && (abs(cms3.genps_id().at(i)) == 11 || abs(cms3.genps_id().at(i)) == 13) && isMotherFromBoson(i))
         return true;
     if (cms3.genps_status().at(i) == 23 && (abs(cms3.genps_id().at(i)) == 15) && isMotherFromBoson(i))
         return true;

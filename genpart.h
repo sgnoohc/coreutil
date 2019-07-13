@@ -60,6 +60,7 @@ namespace CoreUtil
             static bool isMotherFromBoson   (int i);
 
             static bool isStar(int i);
+            static bool isSame(int i, int j);
 
             void printIncomingPartons() { printPartonsWithCondition("== Incoming partons ==", isIncomingParton); }
             void printIntermediatePartons() { printPartonsWithCondition("== Intermediate partons ==", isIntermediateParton); }
