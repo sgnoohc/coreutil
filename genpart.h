@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <utility>
+#include <functional>
 
 #include "Math/LorentzVector.h"
 #include "Math/VectorUtil.h"
