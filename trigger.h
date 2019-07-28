@@ -9,6 +9,13 @@ namespace CoreUtil
     {
 
         public:
+            enum triggerSet
+            {
+                kAll = 0,
+                kDilepton,
+                kSinglelepton,
+                kMET,
+            };
             bool HLT_DoubleMu;
             bool HLT_DoubleMu_2017;
             bool HLT_DoubleMu_2018;
@@ -42,7 +49,7 @@ namespace CoreUtil
             trigger() {}
             ~trigger() {}
 
-            void process();
+            void process(triggerSet=kAll);
 
     };
 }
