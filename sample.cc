@@ -47,6 +47,7 @@ TString CoreUtil::sample::nicename(TString fname)
     if (fname.Contains("WWW_4F_")) return "www";
     if (fname.Contains("VHToNonbb")) return "vh";
     if (fname.Contains("VHToWW")) return "vh";
+    if (fname.Contains("VH_PRIVATE")) return "vh";
     return "UNKNOWN";
 }
 
