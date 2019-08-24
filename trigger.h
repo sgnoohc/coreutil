@@ -28,6 +28,7 @@ namespace CoreUtil
             bool HLT_DoubleEl_2017;
             bool HLT_DoubleEl_2018;
             int HLT_SingleIsoEl8;
+            int HLT_SingleIsoEl12;
             int HLT_SingleIsoEl17;
             int HLT_SingleIsoEl23;
             int HLT_SingleIsoMu8;
@@ -35,12 +36,14 @@ namespace CoreUtil
             int HLT_SingleEl8_2017;
             int HLT_SingleEl17_2017;
             int HLT_SingleIsoEl8_2017;
+            int HLT_SingleIsoEl12_2017;
             int HLT_SingleIsoEl23_2017;
             int HLT_SingleIsoMu8_2017;
             int HLT_SingleIsoMu17_2017;
             int HLT_SingleEl8_2018;
             int HLT_SingleEl17_2018;
             int HLT_SingleIsoEl8_2018;
+            int HLT_SingleIsoEl12_2018;
             int HLT_SingleIsoEl23_2018;
             int HLT_SingleIsoMu8_2018;
             int HLT_SingleIsoMu17_2018;
