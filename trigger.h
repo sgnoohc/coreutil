@@ -27,6 +27,8 @@ namespace CoreUtil
             bool HLT_DoubleEl_DZ_2;
             bool HLT_DoubleEl_2017;
             bool HLT_DoubleEl_2018;
+            int HLT_SingleEl8;
+            int HLT_SingleEl17;
             int HLT_SingleIsoEl8;
             int HLT_SingleIsoEl12;
             int HLT_SingleIsoEl17;
