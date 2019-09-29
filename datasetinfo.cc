@@ -73,3 +73,20 @@ float CoreUtil::datasetinfo::getXsec()
         return xsec;
     }
 }
+
+//########################################################################################
+int CoreUtil::datasetinfo::getNEvents()
+{
+    if (cms3.evt_CMS3tag()[0].Contains("CMS3"))
+        return -999;
+    if (df.doesEntryExist(cms3.evt_dataset()[0].Data(),cms3.evt_CMS3tag()[0].Data()))
+    {
+        float nevt = df.getnEventsEffectiveFromFile(cms3.evt_dataset()[0].Data(),cms3.evt_CMS3tag()[0].Data());
+        return nevt;
+    }
+    else
+    {
+        float nevt = dfcustom.getnEventsEffectiveFromFile(cms3.evt_dataset()[0].Data(),cms3.evt_CMS3tag()[0].Data());
+        return nevt;
+    }
+}

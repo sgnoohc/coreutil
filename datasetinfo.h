@@ -22,6 +22,7 @@ namespace CoreUtil
 
             float getScale1fb();
             float getXsec();
+            int getNEvents();
     };
 }
 
