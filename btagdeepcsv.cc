@@ -34,7 +34,8 @@ CoreUtil::btagdeepcsv::~btagdeepcsv(){
     if (reader_tight_FS) delete reader_tight_FS;
     if (reader_loose_FS) delete reader_loose_FS;
 
-    feff->Close();
+    if (feff)
+        feff->Close();
 
 }
 
