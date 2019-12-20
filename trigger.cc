@@ -82,7 +82,6 @@ void CoreUtil::trigger::process(CoreUtil::trigger::triggerSet trigSet)
     if (trigSet == kAll or trigSet == kOneLep )
     {
 
-	//std::cout << "KARRI: Muon Triggers" << std::endl;
 	// muons!
 	setHLTBranch("HLT_IsoMu24_v" 			  , true,  HLT_IsoMu24 ); 
 	setHLTBranch("HLT_IsoTkMu24_v" 			  , true,  HLT_IsoTkMu24 ); 
@@ -92,7 +91,6 @@ void CoreUtil::trigger::process(CoreUtil::trigger::triggerSet trigSet)
 	setHLTBranch("HLT_OldMu100_v" 			  , true,  HLT_OldMu100 ); 
 	setHLTBranch("HLT_TkMu100_v" 			  , true,  HLT_TkMu100 ); 
 
-	//std::cout << "KARRI: Electron Triggers" << std::endl;
 	// electrons!
 	setHLTBranch("HLT_Ele27_WPTight_Gsf_v" 		  , true,  HLT_Ele27_WPTight_Gsf ); 
 	setHLTBranch("HLT_Ele28_WPTight_Gsf_v" 		  , true,  HLT_Ele28_WPTight_Gsf ); 
@@ -105,7 +103,6 @@ void CoreUtil::trigger::process(CoreUtil::trigger::triggerSet trigSet)
 	setHLTBranch("HLT_Photon175_v" 			  , true,  HLT_Photon175 );
 	setHLTBranch("HLT_Photon200_v" 			  , true,  HLT_Photon200 );
 
-	//std::cout << "KARRI: OR of Triggers" << std::endl;
 	HLT_SingleMu2016 = ( HLT_IsoMu24 || HLT_IsoTkMu24 || HLT_Mu50 || HLT_TkMu50 ) ;
 	HLT_SingleMu2017 = ( HLT_IsoMu27 || HLT_Mu50 || HLT_OldMu100 || HLT_TkMu100 ) ;
 	HLT_SingleMu2018 = ( HLT_IsoMu24 || HLT_Mu50 || HLT_OldMu100 || HLT_TkMu100 ) ;
